@@ -28,7 +28,7 @@ public class Product {
     private String name;
 
     @Column(name="product_rate")
-    private int rate;
+    private double rate;
 
     @Column(name="detail")
     private String detail;
