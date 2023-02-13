@@ -7,7 +7,9 @@ import com.fast.miniproject.auth.service.TokenService;
 import com.fast.miniproject.auth.service.UserService;
 import com.fast.miniproject.global.response.ResponseDTO;
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,4 +34,11 @@ public class AuthController {
     public ResponseDTO<?> logout(@RequestHeader(name="Authorization") String header){
         return tokenService.logout(header);
     }
+
+    @GetMapping("/hello")
+    @PreAuthorize("hasAnyRole('USER')") // USER 권한만 호출 가능
+    public String hello(@AuthenticationPrincipal LoginReqDTO loginReqDTO) {
+        return loginReqDTO.getEmail() + ", 안녕하세요!";
+    }
+
 }
