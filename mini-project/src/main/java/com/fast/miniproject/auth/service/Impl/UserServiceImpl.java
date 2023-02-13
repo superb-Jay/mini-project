@@ -9,6 +9,7 @@ import com.fast.miniproject.auth.service.UserService;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
 import com.fast.miniproject.global.response.ResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -19,27 +20,43 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
     @Override
-    public ResponseDTO<?> signup(SignupReqDTO signupReqDTO){
-        if(userRepository.existsByEmail(signupReqDTO.getEmail())){
-            return new ErrorResponseDTO(500,"이미 존재하는 회원입니다.").toResponse();
-        }else {
+    public ResponseDTO<?> signup(SignupReqDTO signupReqDTO) {
+
+
+        if (userRepository.findByEmail(signupReqDTO.getEmail()).isPresent()) {
+            return new ErrorResponseDTO(500, "이미 존재하는 회원입니다.").toResponse();
+        } else {
+            String encodingPassword = encodingPassword(signupReqDTO.getPassword());
+            signupReqDTO.setPassword(encodingPassword);
             userRepository.save(signupReqDTO.toEntity());
-            return new ResponseDTO<>(null);
+            return new ResponseDTO<>(signupReqDTO.toString());
         }
     }
 
     @Override
-    public ResponseDTO<?> login(LoginReqDTO loginReqDTO){
-        Optional<User> loggedIn=userRepository.findByEmailAndPassword(loginReqDTO.getEmail(),loginReqDTO.getPassword());
-        try{
-            User user=loggedIn.get();
-            return new ResponseDTO<>(jwtProvider.token(user));
-        }catch(NoSuchElementException e){
-            return new ErrorResponseDTO(500,"로그인에 실패하였습니다.").toResponse();
+    public ResponseDTO<?> login(LoginReqDTO loginReqDTO) {
+        try {
+            User user = userRepository.findByEmail(loginReqDTO.getEmail())
+                    .orElseThrow(IllegalArgumentException::new);
+            passwordMustBeSame(loginReqDTO.getPassword(), user.getPassword());
+            return new ResponseDTO<>(jwtProvider.makeJwtToken(user));
+        } catch (NoSuchElementException e) {
+            return new ErrorResponseDTO(500, "로그인에 실패하였습니다.").toResponse();
         }
+    }
+
+    private void passwordMustBeSame(String requestPassword, String password) {
+        if (!passwordEncoder.matches(requestPassword, password)) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private String encodingPassword(String password) {
+        return passwordEncoder.encode(password);
     }
 
 }
