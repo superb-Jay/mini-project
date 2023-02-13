@@ -18,6 +18,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
+    @Column(name = "product_price")
+    private int price;
+
     @Column(name="product_brand")
     private String brand;
 
@@ -27,7 +30,7 @@ public class Product {
     @Column(name="product_name")
     private String name;
 
-    @Column(name="product_rate")
+    @Column(name = "product_rate")
     private double rate;
 
     @Column(name="detail")
