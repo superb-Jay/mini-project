@@ -1,15 +1,13 @@
 package com.fast.miniproject.auth.dto;
 
 import com.fast.miniproject.auth.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class SignupReqDTO {
 
     private String email;
