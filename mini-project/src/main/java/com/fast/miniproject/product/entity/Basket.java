@@ -5,11 +5,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(name="basket")
 public class Basket {
@@ -26,4 +24,10 @@ public class Basket {
     @ManyToOne(targetEntity= User.class, fetch=FetchType.LAZY)
     @JoinColumn(name="member")
     private User user;
+
+    @Builder
+    public Basket(Product product, User user) {
+        this.product = product;
+        this.user = user;
+    }
 }

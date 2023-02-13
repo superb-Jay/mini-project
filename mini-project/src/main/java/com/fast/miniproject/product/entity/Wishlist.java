@@ -5,13 +5,11 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-@Builder
 @Entity
-@Table(name="wishlist")
+@Table(name = "wishlist")
 public class Wishlist {
 
     @Id
@@ -19,11 +17,17 @@ public class Wishlist {
     @Column(name = "wish_id")
     private Long wishId;
 
-    @ManyToOne(targetEntity=Product.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="product")
+    @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product")
     private Product product;
 
-    @ManyToOne(targetEntity= User.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="member")
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "member")
     private User user;
+
+    @Builder
+    public Wishlist(Product product, User user) {
+        this.product = product;
+        this.user = user;
+    }
 }
