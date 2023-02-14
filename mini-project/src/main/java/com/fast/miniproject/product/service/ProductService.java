@@ -8,4 +8,6 @@ public interface ProductService {
     
     public ResponseDTO<?> selectProduct();
 
+
+    ResponseDTO<?> recommendProduct(String email);
 }

@@ -1,5 +1,7 @@
 package com.fast.miniproject.product.service.impl;
 
+import com.fast.miniproject.auth.entity.User;
+import com.fast.miniproject.auth.repository.UserRepository;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
 import com.fast.miniproject.global.response.ResponseDTO;
 import com.fast.miniproject.product.dto.ProductDTO;
@@ -18,6 +20,9 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+
+
+    private final UserRepository userRepository;
 
     @Override
     public ResponseDTO selectProductDetail(Long product_id) {
@@ -44,4 +49,24 @@ public class ProductServiceImpl implements ProductService {
         return new ResponseDTO<>(productList);
 
     }
+
+    @Override
+    public ResponseDTO<?> recommendProduct(String email) {
+
+        User user  = userRepository.findByEmail(email).get();
+
+        int limitAmount =(int) (user.getSalary() * 2);
+
+        List<Product> product = productRepository.findByPriceLessThanEqual(limitAmount);
+
+        List<ProductDTO> productList = product.stream()
+                .map(pro -> new ProductDTO(pro.getPrice(),pro.getBrand(),pro.getLogo(),pro.getName(),pro.getRate(),pro.getDetail()))
+                .collect(Collectors.toList());
+
+
+
+
+        return new ResponseDTO<>(productList);
+    }
+
 }

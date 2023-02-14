@@ -1,5 +1,7 @@
 package com.fast.miniproject.product.controller;
 
+import com.fast.miniproject.auth.dto.LoginReqDTO;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.fast.miniproject.global.response.ResponseDTO;
 import com.fast.miniproject.product.dto.ProductDTO;
@@ -24,5 +26,10 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseDTO<?> selectProduct( ){
         return productService.selectProduct();
+    }
+
+    @GetMapping("/product/recommend")
+    public ResponseDTO<?> recommendProduct(@AuthenticationPrincipal LoginReqDTO loginReqDTO){
+        return productService.recommendProduct(loginReqDTO.getEmail());
     }
 }
