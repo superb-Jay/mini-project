@@ -3,6 +3,7 @@ package com.fast.miniproject.auth.controller;
 
 import com.fast.miniproject.auth.dto.LoginReqDTO;
 import com.fast.miniproject.auth.dto.SignupReqDTO;
+import com.fast.miniproject.auth.dto.UserResDTO;
 import com.fast.miniproject.auth.service.TokenService;
 import com.fast.miniproject.auth.service.UserService;
 import com.fast.miniproject.global.response.ResponseDTO;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
+
     private final UserService userService;
     private final TokenService tokenService;
 
@@ -34,6 +36,10 @@ public class AuthController {
     public ResponseDTO<?> logout(@RequestHeader(name="Authorization") String header){
         return tokenService.logout(header);
     }
+//    @PostMapping("/api/user")
+//    public UserResDTO editUser(@RequestHeader(name="Authorization") LoginReqDTO loginReqDTO) {
+//        return userService.editUser(loginReqDTO);
+//    }
 
     @GetMapping("/hello")
     @PreAuthorize("hasAnyRole('USER')") // USER 권한만 호출 가능

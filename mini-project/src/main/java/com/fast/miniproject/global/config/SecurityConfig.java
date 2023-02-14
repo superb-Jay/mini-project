@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private static final String[] PUBLIC_URLS = { //이 URL은 권한 검사안함
-            "/register", "/login" , "/index", "/products**","/hello","/logout","/hello"
+            "/register", "/login" , "/index", "/products**","/hello","/logout"
     };
 
     private final JwtFilter jwtFilter;

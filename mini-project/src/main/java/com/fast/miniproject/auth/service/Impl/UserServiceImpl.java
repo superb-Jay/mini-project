@@ -2,6 +2,7 @@ package com.fast.miniproject.auth.service.Impl;
 
 import com.fast.miniproject.auth.dto.LoginReqDTO;
 import com.fast.miniproject.auth.dto.SignupReqDTO;
+import com.fast.miniproject.auth.dto.UserResDTO;
 import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.auth.jwt.JwtProvider;
 import com.fast.miniproject.auth.repository.UserRepository;
@@ -46,8 +47,18 @@ public class UserServiceImpl implements UserService {
             return new ResponseDTO<>(jwtProvider.makeJwtToken(user));
         } catch (NoSuchElementException e) {
             return new ErrorResponseDTO(500, "로그인에 실패하였습니다.").toResponse();
+        } catch (IllegalArgumentException e) {
+            return new ErrorResponseDTO(500, "로그인에 실패하였습니다.").toResponse();
         }
+
     }
+
+//    @Override
+//    public UserResDTO editUser(LoginReqDTO loginReqDTO) {
+//        Optional<User> loginUserInfo = userRepository.findByEmail(loginReqDTO.getEmail());
+//
+//        return new UserResDTO(loginUserInfo);
+//    }
 
     private void passwordMustBeSame(String requestPassword, String password) {
         if (!passwordEncoder.matches(requestPassword, password)) {

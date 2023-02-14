@@ -16,8 +16,7 @@ public class ProductController {
     private final ProductService productService;
 
 
-
-    @GetMapping("/products")
+    @GetMapping("/product/detail")
     public ResponseDTO<?> productDetail(@RequestParam Long products_id){
         return productService.selectProductDetail(products_id);
     }
