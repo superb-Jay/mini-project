@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface BasketService {
 
-    public ResponseDTO<?> selectBasketDTO(LoginReqDTO loginReqDTO);
+    public ResponseDTO<?> listBasketDTO(LoginReqDTO loginReqDTO);
 
     public ResponseDTO<?> deleteBasket(LoginReqDTO loginReqDTO, BasketDeleteRequestDTO requestDTO);
 

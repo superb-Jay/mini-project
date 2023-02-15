@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,32 +33,46 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> selectBasketDTO(LoginReqDTO loginReqDTO) {
-        List<Basket> basketList = basketRepository.findAll();
-        return new ResponseDTO<>(basketList.stream().map(en -> new BasketResponseDTO(en))
+    public ResponseDTO<?> listBasketDTO(LoginReqDTO loginReqDTO) {
+        User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
+        List<Basket> basketList = basketRepository.findAllByUser(user);
+
+//        return new ResponseDTO<>(basketList.stream().map(en -> new BasketResponseDTO(en))
+//                .collect(Collectors.toList()));
+        return new ResponseDTO<>(basketList.stream()
+                .map(BasketResponseDTO::new)
                 .collect(Collectors.toList()));
     }
 
     @Override
     @Transactional
     public ResponseDTO<?> deleteBasket(LoginReqDTO loginReqDTO, BasketDeleteRequestDTO requestDTO) {
-
         try {
-            basketRepository.deleteById(requestDTO.getBasketId());
+            User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
+            if (basketRepository.existsByBasketIdAndUser(requestDTO.getBasketId(), user)) {
+                basketRepository.deleteByBasketIdAndUser(requestDTO.getBasketId(), user);
+                return new ResponseDTO<>(200,"상품 삭제 성공",null);
+            }
         } catch (Exception e) {
             return new ErrorResponseDTO(500, "상품 삭제 실패").toResponse();
         }
-        return new ResponseDTO<>(200,"상품 삭제 성공",null);
+        return new ErrorResponseDTO(500, "상품 삭제 실패1").toResponse();
     }
 
     @Override
+    @Transactional
     public ResponseDTO<?> addBasket(LoginReqDTO loginReqDTO, BasketAddRequestDTO requestDTO) {
 
         Product product = productRepository.findByProductId(requestDTO.getProductId()).get();
+
         User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
 
         try {
-          basketRepository.save(new Basket(product, user));
+            if (basketRepository.existsByProductAndUser(product,user)) {
+                return new ErrorResponseDTO(500, "이미 존재하는 상품입니다.").toResponse();
+            }  else {
+                basketRepository.save(new Basket(product, user));
+            }
         } catch (Exception e) {
             return new ErrorResponseDTO(500, "상품 추가 실패").toResponse();
         }
