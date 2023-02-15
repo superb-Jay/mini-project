@@ -66,4 +66,9 @@ public class User {
         this.salary = salary;
         this.job = job;
     }
+
+    public void delete(String withdraw) {
+        this.deleteCheck = withdraw;
+    }
+
 }
