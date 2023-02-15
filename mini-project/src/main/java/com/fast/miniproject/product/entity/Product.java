@@ -5,10 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "product")
+@Builder
 public class Product {
 
     @Id
