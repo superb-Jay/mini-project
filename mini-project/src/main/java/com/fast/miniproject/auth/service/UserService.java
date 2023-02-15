@@ -11,4 +11,5 @@ public interface UserService {
     ResponseDTO<?> login(LoginReqDTO loginReqDTO);
     public ResponseDTO<?> editUser(LoginReqDTO loginReqDTO) ;
     public ResponseDTO<?> updateUser(LoginReqDTO loginReqDTO, PatchUserReqDTO patchUserReqDTO);
+    public ResponseDTO<?> deleteUser(LoginReqDTO loginReqDTO, String password);
 }
