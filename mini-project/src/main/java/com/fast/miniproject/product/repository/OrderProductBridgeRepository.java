@@ -11,5 +11,5 @@ import java.util.List;
 public interface OrderProductBridgeRepository extends JpaRepository<OrderProductBridge,Long> {
 
     @Query(nativeQuery = true,value = "SELECT * FROM order_product as p WHERE p.orders IN (:orders_list)")
-    List<OrderProductBridge> findAllByOrderList(@Param("orders_list") List<Orders> orders_list);
+    List<OrderProductBridge> findAllByOrdersList(@Param("orders_list") List<Orders> orders_list);
 }
