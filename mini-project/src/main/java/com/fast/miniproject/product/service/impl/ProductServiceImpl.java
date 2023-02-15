@@ -115,12 +115,14 @@ public class ProductServiceImpl implements ProductService {
         try {
             User user = userRepository.findByEmail(dto.getEmail()).get();
             List<Orders> ordersList = orderRepository.findAllByUserOrderByPurchaseDate(user);
-            List<OrderProductBridge> list = orderProductBridgeRepository.findAllByOrdersList(ordersList);
-            return new ResponseDTO<>(new OrderListResp(list));
+            if (ordersList.size()>0){
+                List<OrderProductBridge> list = orderProductBridgeRepository.findAllByOrdersList(ordersList);
+                return new ResponseDTO<>(new OrderListResp(list));
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseDTO<>("failed");
+        return new ErrorResponseDTO(500,"구매하신 상품이 없습니다.").toResponse();
     }
 
     private boolean isAvailableToPurchase(User user,List<Product> productList){
