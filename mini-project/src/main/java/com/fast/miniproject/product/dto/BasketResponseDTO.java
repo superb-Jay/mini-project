@@ -1,8 +1,11 @@
 package com.fast.miniproject.product.dto;
 
 
+import lombok.Getter;
+
 import com.fast.miniproject.product.entity.Basket;
 
+@Getter
 public class BasketResponseDTO {
 
     private Long basketId;
