@@ -13,9 +13,7 @@ import java.time.LocalDateTime;
 @Table(name="member")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
 public class User {
@@ -56,5 +54,17 @@ public class User {
     @UpdateTimestamp
     @Column(name = "updated_date")
     private LocalDateTime updated_date;
+
+    @Builder
+    public User(String email, String password, String name, int age, String gender, String phone, Long salary, String job) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.phone = phone;
+        this.salary = salary;
+        this.job = job;
+    }
 
 }
