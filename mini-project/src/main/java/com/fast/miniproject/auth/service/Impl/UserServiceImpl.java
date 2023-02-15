@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseDTO<?> signup(SignupReqDTO signupReqDTO) {
 
-
         if (userRepository.findByEmail(signupReqDTO.getEmail()).isEmpty()) {
             String encodingPassword = encodingPassword(signupReqDTO.getPassword());
             signupReqDTO.setPassword(encodingPassword);
@@ -44,6 +43,9 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userRepository.findByEmail(loginReqDTO.getEmail())
                     .orElseThrow(IllegalArgumentException::new);
+            if(withDrawCheck(user)) {
+                return new ErrorResponseDTO(500, "탈퇴한 회원입니다.").toResponse();
+            }
             passwordMustBeSame(loginReqDTO.getPassword(), user.getPassword());
             return new ResponseDTO<>(jwtProvider.makeJwtToken(user));
         } catch (NoSuchElementException e) {
@@ -82,6 +84,23 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    @Transactional
+    public ResponseDTO<?> deleteUser(LoginReqDTO loginReqDTO,String password) {
+        try {
+            User user = userRepository.findByEmail(loginReqDTO.getEmail())
+                    .orElseThrow(IllegalArgumentException::new);
+
+            passwordMustBeSame(password, user.getPassword());
+            user.delete("withdraw");
+
+            return new ResponseDTO<>(200,"회원 탈퇴 성공.",user);
+        }catch (IllegalArgumentException e) {
+            return new ErrorResponseDTO(500, "기존 비밀번호가 일치하지 않습니다.").toResponse();
+        }
+    }
+
+
     private void passwordMustBeSame(String requestPassword, String password) {
         if (!passwordEncoder.matches(requestPassword, password)) {
             throw new IllegalArgumentException();
@@ -90,6 +109,10 @@ public class UserServiceImpl implements UserService {
 
     private String encodingPassword(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    private boolean withDrawCheck(User user) {
+        return user.getDeleteCheck() != null;
     }
 
 }
