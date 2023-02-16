@@ -1,7 +1,6 @@
 package com.fast.miniproject.product.dto;
 
 import com.fast.miniproject.product.entity.Orders;
-import com.fast.miniproject.product.entity.PurchasedProduct;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

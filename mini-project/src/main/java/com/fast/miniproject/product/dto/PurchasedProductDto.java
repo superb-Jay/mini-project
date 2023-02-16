@@ -1,12 +1,10 @@
 package com.fast.miniproject.product.dto;
 
-import com.fast.miniproject.product.entity.Product;
 import com.fast.miniproject.product.entity.PurchasedProduct;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
 
 @Getter
 @Setter

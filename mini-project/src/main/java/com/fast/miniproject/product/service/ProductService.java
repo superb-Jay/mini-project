@@ -2,7 +2,6 @@ package com.fast.miniproject.product.service;
 
 import com.fast.miniproject.auth.dto.LoginReqDTO;
 import com.fast.miniproject.global.response.ResponseDTO;
-import com.fast.miniproject.product.dto.ProductDTO;
 
 import java.util.ArrayList;
 
