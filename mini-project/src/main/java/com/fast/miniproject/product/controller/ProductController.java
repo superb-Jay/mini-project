@@ -3,15 +3,10 @@ package com.fast.miniproject.product.controller;
 import com.fast.miniproject.auth.dto.LoginReqDTO;
 import com.fast.miniproject.product.dto.ProductIdList;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import com.fast.miniproject.global.response.ResponseDTO;
-import com.fast.miniproject.product.dto.ProductDTO;
-import com.fast.miniproject.product.entity.Product;
 import com.fast.miniproject.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,5 +38,10 @@ public class ProductController {
     @GetMapping("/product/order/check")
     public ResponseDTO<?> orderCheck(@AuthenticationPrincipal LoginReqDTO dto){
          return productService.orderCheck(dto);
+    }
+
+    @DeleteMapping("/product/order/delete")
+    public ResponseDTO<?> deleteBuy(@AuthenticationPrincipal LoginReqDTO dto,@RequestParam Long orderId){
+        return productService.deleteOrder(dto,orderId);
     }
 }
