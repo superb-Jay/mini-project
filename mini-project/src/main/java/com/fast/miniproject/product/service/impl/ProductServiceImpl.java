@@ -5,15 +5,13 @@ import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.auth.repository.UserRepository;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
 import com.fast.miniproject.global.response.ResponseDTO;
-import com.fast.miniproject.product.dto.OrderDetail;
-import com.fast.miniproject.product.dto.OrderListResp;
+import com.fast.miniproject.product.dto.OrderHistory;
 import com.fast.miniproject.product.dto.ProductDTO;
 import com.fast.miniproject.product.dto.ProductDetailDTO;
+import com.fast.miniproject.product.dto.PurchasedProductDto;
 import com.fast.miniproject.product.entity.Orders;
-import com.fast.miniproject.product.entity.OrderProductBridge;
 import com.fast.miniproject.product.entity.Product;
 import com.fast.miniproject.product.entity.PurchasedProduct;
-import com.fast.miniproject.product.repository.OrderProductBridgeRepository;
 import com.fast.miniproject.product.repository.OrderRepository;
 import com.fast.miniproject.product.repository.ProductRepository;
 import com.fast.miniproject.product.repository.PurchaseProductRepository;
@@ -35,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
     private final UserRepository userRepository;
     private final PurchaseProductRepository purchaseProductRepository;
     private final OrderRepository orderRepository;
-    private final OrderProductBridgeRepository orderProductBridgeRepository;
+
 
     @Override
     public ResponseDTO selectProductDetail(Long product_id) {
@@ -92,19 +90,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseDTO<?> buyProduct(ArrayList<Integer> products_id_list, LoginReqDTO dto) {
-        User user = userRepository.findByEmail(dto.getEmail()).get();
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(IllegalArgumentException::new);
         List<Product> productList = productRepository.findAllByProductId(products_id_list);
-        if (user==null || productList.size()==0)return new ErrorResponseDTO(500,"구매에 실패하였습니다.").toResponse();
+        if (productList.size()!=products_id_list.size())return new ErrorResponseDTO(500,"구매에 실패하였습니다.").toResponse();
         if(!isAvailableToPurchase(user,productList))return new ErrorResponseDTO(500,"대출 가능 금액을 초과하였습니다.").toResponse();
-
         try {
-            List<PurchasedProduct> purchasedProducts = purchaseProductRepository.saveAll(toSaveList(productList));
-            Orders orders = orderRepository.save(new Orders(user));
-            List<OrderProductBridge> orderList = new ArrayList<>();
-            for (PurchasedProduct product: purchasedProducts){
-                orderList.add(orderProductBridgeRepository.save(new OrderProductBridge(product, orders)));
-            }
-            return new ResponseDTO(new OrderDetail(orderList));
+            Orders orders = new Orders(user);
+            toSave(productList,orders);
+            orderRepository.save(orders);
+            return new ResponseDTO<>("상품 구매에 성공하였습니다.");
         }catch (Exception e){
             return new ErrorResponseDTO(500,"구매에 실패하였습니다.").toResponse();
         }
@@ -112,45 +106,75 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseDTO<?> orderCheck(LoginReqDTO dto) {
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(IllegalArgumentException::new);
         try {
-            User user = userRepository.findByEmail(dto.getEmail()).get();
-            List<Orders> ordersList = orderRepository.findAllByUserOrderByPurchaseDate(user);
-            if (ordersList.size()>0){
-                List<OrderProductBridge> list = orderProductBridgeRepository.findAllByOrdersList(ordersList);
-                return new ResponseDTO<>(new OrderListResp(list));
-            }
+           List<Orders> orderList =  orderRepository.findAllByUserOrderByPurchaseDate(user);
+           ArrayList<PurchasedProduct> list = purchaseProductRepository.findAllByOrdersList(orderList);
+           return new ResponseDTO<>(getList(list));
         }catch (Exception e){
-            e.printStackTrace();
+
         }
         return new ErrorResponseDTO(500,"구매하신 상품이 없습니다.").toResponse();
     }
 
+    @Override
+    public ResponseDTO<?> deleteOrder(LoginReqDTO dto, Long orderId) {
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(IllegalArgumentException::new);
+        try {
+            Orders orders = orderRepository.findByOrderIdAndUser(orderId,user).orElseThrow(IllegalArgumentException::new);
+            orderRepository.delete(orders);
+            return new ResponseDTO<>(200,"구매를 취소하였습니다.",null);
+        }catch (Exception e){
+
+        }
+        return new ErrorResponseDTO(500,"구매 취소를 실패하였습니다.").toResponse();
+
+    }
+
     private boolean isAvailableToPurchase(User user,List<Product> productList){
         List<Orders> ordersList = orderRepository.findAllByUserOrderByPurchaseDate(user);
-        List<OrderProductBridge> list =orderProductBridgeRepository.findAllByOrdersList(ordersList);
-        long spent =0;
-        for (OrderProductBridge op : list){
-            spent+=op.getPurchasedProduct().getPurchasedProductPrice();
-        }
-        long max =(user.getSalary()*2)-spent;
-        long sum =0;
-        for (Product p :productList){
-            sum+=p.getPrice();
-        }
-        if (max<sum) {
-            return false;
-        }else {
-            return true;
-        }
+       Integer sum =purchaseProductRepository.searchSumByOrdersList(ordersList);
+       int max = (int) (user.getSalary()*2);
+       if (sum!=null){
+           System.out.println(sum);
+           max-=sum;
+       }
+       for (Product product: productList){
+           max-=product.getPrice();
+       }
+       if (max>0) {
+           return true;
+       }else {
+           return false;
+       }
     }
 
 
-    private List<PurchasedProduct> toSaveList(List<Product> productList){
-        List<PurchasedProduct> list = new ArrayList<>();
-        for (Product product : productList){
-            list.add(new PurchasedProduct(product));
+    private void toSave(List<Product> productList,Orders orders){
+        for (Product product: productList){
+            PurchasedProduct purchasedProduct = new PurchasedProduct(product);
+            orders.getPurchasedProducts().add(purchasedProduct);
+            purchasedProduct.setOrders(orders);
         }
-        return list;
+    }
+
+    public ArrayList<OrderHistory> getList(ArrayList<PurchasedProduct> purchasedProducts){
+        ArrayList<OrderHistory> orderHistoryArrayList = new ArrayList<>();
+        ArrayList<PurchasedProductDto> toShowList = new ArrayList<>();
+        Orders order = null;
+        for (int i=0;i<purchasedProducts.size();i++){
+            if(order==purchasedProducts.get(i).getOrders()||order==null){
+                order=purchasedProducts.get(i).getOrders();
+                toShowList.add(new PurchasedProductDto(purchasedProducts.get(i)));
+            }else {
+                orderHistoryArrayList.add(new OrderHistory(toShowList,order));
+                order=purchasedProducts.get(i).getOrders();
+                toShowList = new ArrayList<>();
+                toShowList.add(new PurchasedProductDto(purchasedProducts.get(i)));
+            }
+        }
+        orderHistoryArrayList.add(new OrderHistory(toShowList,order));
+        return orderHistoryArrayList;
     }
 
 
