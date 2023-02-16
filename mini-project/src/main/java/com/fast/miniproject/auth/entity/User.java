@@ -1,6 +1,9 @@
 package com.fast.miniproject.auth.entity;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,40 +13,38 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="member")
+@Table(name = "member")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
 public class User {
 
     @Id
-    @Column(name="member_id")
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(name="member_email")
+    @Column(name = "member_email")
     private String email;
 
-    @Column(name="member_pw")
+    @Column(name = "member_pw")
     private String password;
 
-    @Column(name="member_name")
+    @Column(name = "member_name")
     private String name;
 
-    @Column(name="member_age")
+    @Column(name = "member_age")
     private int age;
 
-    @Column(name="member_gender")
+    @Column(name = "member_gender")
     private String gender;
 
-    @Column(name="member_phone")
+    @Column(name = "member_phone")
     private String phone;
 
-    @Column(name="member_salary")
+    @Column(name = "member_salary")
     private Long salary;
 
     @Column(name = "member_job")
@@ -71,4 +72,16 @@ public class User {
         this.deleteCheck = withdraw;
     }
 
+    @Builder
+    public User(String email, String password, String name, int age, String gender, String phone, Long salary, String job, String deleteCheck) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.phone = phone;
+        this.salary = salary;
+        this.job = job;
+        this.deleteCheck = deleteCheck;
+    }
 }
