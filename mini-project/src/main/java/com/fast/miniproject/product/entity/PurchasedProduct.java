@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "purchased_product")
-@ToString
 public class PurchasedProduct {
 
     @Id
@@ -35,10 +34,13 @@ public class PurchasedProduct {
     @Column(name="purchased_product_detail")
     private String purchasedProductDetail;
 
-    @ManyToOne(targetEntity=Product.class, fetch=FetchType.EAGER)
+    @ManyToOne(targetEntity=Product.class, fetch=FetchType.LAZY)
     @JoinColumn(name="product")
     private Product product;
 
+    @ManyToOne(targetEntity = Orders.class,fetch = FetchType.LAZY)
+    @JoinColumn(name = "orders")
+    private Orders orders;
 
     public PurchasedProduct(Product product) {
         this.purchasedProductPrice = product.getPrice();
