@@ -8,11 +8,18 @@ import com.fast.miniproject.auth.dto.PatchUserResDTO;
 import com.fast.miniproject.auth.service.TokenService;
 import com.fast.miniproject.auth.service.UserService;
 import com.fast.miniproject.global.response.ResponseDTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
+
+@Api(tags = {"회원정보 서비스"}, description = "회원가입, 회원정보수정, 회원탈퇴,")
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -21,37 +28,73 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/register")
+    @ApiOperation(value = "회원가입 (토큰 X)" , notes = "정보를 입력받아 회원가입을 진행하고 DB에 저장하는")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "email", value = "사용자 식별 이메일", required = true),
+            @ApiImplicitParam(name = "password", value = "사용자 비밀번호", required = true),
+            @ApiImplicitParam(name = "name", value = "사용자 이름", required = true),
+            @ApiImplicitParam(name = "age", value = "사용자 나이", required = true),
+            @ApiImplicitParam(name = "gender", value = "사용자 성별(MALE/FEMALE)", required = true),
+            @ApiImplicitParam(name = "phone", value = "사용자 전화번호", required = true),
+            @ApiImplicitParam(name = "salary", value = "사용자 연봉", required = true),
+            @ApiImplicitParam(name = "job", value = "사용자 직업", required = true)
+    })
     public ResponseDTO<?> signUp(SignupReqDTO signupReqDTO) {
         return userService.signup(signupReqDTO);
     }
 
     @PostMapping("/login")
+    @ApiOperation(value = "로그인 (토큰 X)", notes = "이메일과 패스워드를 입력받아 로그인이 가능 성공하면 토큰발급")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "email", value = "사용자 식별 이메일", required = true),
+            @ApiImplicitParam(name = "password", value = "사용자 비밀번호", required = true),
+    })
     public ResponseDTO<?> signIn(LoginReqDTO loginReqDTO) {
         return userService.login(loginReqDTO);
     }
 
     @PostMapping("/logout")
-    public ResponseDTO<?> logout(@RequestHeader(name = "Authorization") String header) {
+    @ApiOperation(value = "로그아웃 (토큰 O)", notes = "버튼을 누르면 현재 로그인 토큰을 로그아웃 테이블에 저장한다. " +
+                                            "다음 요청시에 현재 토큰과 요청이 오면 토큰 유효성 검사에 걸려서 로그인을 다시 요청하게 된다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "header", value = "현재 헤더에 있는 토큰의 정보", required = true)
+    })
+
+    public ResponseDTO<?> logout( @ApiIgnore @RequestHeader(name = "Authorization") String header) {
         return tokenService.logout(header);
     }
     @PostMapping("/api/user")
-    public ResponseDTO<?> editUser(@AuthenticationPrincipal LoginReqDTO loginReqDTO) {
+    @ApiOperation(value = "회원정보 수정페이지 (토큰 O)", notes = "회원정보 수정페이지로 이동한다. " +
+                        "현재 로그인회원의 정보를 반환한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "email", value = "사용자 식별 이메일", required = true),
+            @ApiImplicitParam(name = "password", value = "사용자 비밀번호", required = true),
+    })
+    public ResponseDTO<?> editUser( @ApiIgnore @AuthenticationPrincipal LoginReqDTO loginReqDTO) {
         return userService.editUser(loginReqDTO);
     }
 
     @PatchMapping("/api/user/update")
-    public ResponseDTO<?> updateUser(@AuthenticationPrincipal LoginReqDTO loginReqDTO, PatchUserReqDTO patchUserReqDTO) {
+    @ApiOperation(value = "회원정보 수정버튼 (토큰 O)", notes = "기존 비밀번호가 맞다면 DB에 저장한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "oldPassword", value = "기존 비밀번호", required = true),
+            @ApiImplicitParam(name = "newPassword", value = "새로운 비밀번호", required = true),
+            @ApiImplicitParam(name = "phone", value = "전화번호", required = true),
+            @ApiImplicitParam(name = "salary", value = "연봉", required = true),
+            @ApiImplicitParam(name = "job", value = "직업", required = true),
+    })
+    public ResponseDTO<?> updateUser( @ApiIgnore @AuthenticationPrincipal LoginReqDTO loginReqDTO, PatchUserReqDTO patchUserReqDTO) {
         return userService.updateUser(loginReqDTO,patchUserReqDTO);
     }
 
     @DeleteMapping("/api/user/delete")
-    public ResponseDTO<?> deleteUser(@AuthenticationPrincipal LoginReqDTO loginReqDTO, String password) {
+    @ApiOperation(value = "회원탈퇴 버튼 (토큰 O)", notes = "기존 비밀번호가 맞다면 DB에 deleteCheck에 withdraw를 기록하고 " +
+            "로그인시 deleteCheck 값이 null이 아니면 탈퇴한 회원이라는 메세지를 안내")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "password", value = "비밀번호", required = true),
+    })
+    public ResponseDTO<?> deleteUser( @ApiIgnore @AuthenticationPrincipal LoginReqDTO loginReqDTO, String password) {
         return userService.deleteUser(loginReqDTO,password);
     }
 
-    @GetMapping("/hello")
-    @PreAuthorize("hasAnyRole('USER')") // USER 권한만 호출 가능
-    public String hello(@AuthenticationPrincipal LoginReqDTO loginReqDTO) {
-        return loginReqDTO.getEmail() + ", 안녕하세요!";
-    }
 }
