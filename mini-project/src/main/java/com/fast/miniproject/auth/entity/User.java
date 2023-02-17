@@ -35,11 +35,8 @@ public class User {
     @Column(name = "member_name")
     private String name;
 
-    @Column(name = "member_age")
-    private int age;
-
-    @Column(name = "member_gender")
-    private String gender;
+    @Column(name = "member_birth")
+    private String birth;
 
     @Column(name = "member_phone")
     private String phone;
@@ -73,12 +70,11 @@ public class User {
     }
 
     @Builder
-    public User(String email, String password, String name, int age, String gender, String phone, Long salary, String job, String deleteCheck) {
+    public User(String email, String password, String name, String birth, String phone, Long salary, String job, String deleteCheck) {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.age = age;
-        this.gender = gender;
+        this.birth = birth;
         this.phone = phone;
         this.salary = salary;
         this.job = job;

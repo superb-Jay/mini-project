@@ -33,13 +33,13 @@ public class AuthController {
             @ApiImplicitParam(name = "email", value = "사용자 식별 이메일", required = true),
             @ApiImplicitParam(name = "password", value = "사용자 비밀번호", required = true),
             @ApiImplicitParam(name = "name", value = "사용자 이름", required = true),
-            @ApiImplicitParam(name = "age", value = "사용자 나이", required = true),
-            @ApiImplicitParam(name = "gender", value = "사용자 성별(MALE/FEMALE)", required = true),
+            @ApiImplicitParam(name = "birth", value = "사용자 생년월일)", required = true),
             @ApiImplicitParam(name = "phone", value = "사용자 전화번호", required = true),
             @ApiImplicitParam(name = "salary", value = "사용자 연봉", required = true),
             @ApiImplicitParam(name = "job", value = "사용자 직업", required = true)
     })
-    public ResponseDTO<?> signUp(SignupReqDTO signupReqDTO) {
+    public ResponseDTO<?> signUp(
+            @RequestBody SignupReqDTO signupReqDTO) {
         return userService.signup(signupReqDTO);
     }
 
@@ -49,7 +49,8 @@ public class AuthController {
             @ApiImplicitParam(name = "email", value = "사용자 식별 이메일", required = true),
             @ApiImplicitParam(name = "password", value = "사용자 비밀번호", required = true),
     })
-    public ResponseDTO<?> signIn(LoginReqDTO loginReqDTO) {
+    public ResponseDTO<?> signIn(
+            @RequestBody LoginReqDTO loginReqDTO) {
         return userService.login(loginReqDTO);
     }
 
@@ -60,7 +61,7 @@ public class AuthController {
             @ApiImplicitParam(name = "header", value = "현재 헤더에 있는 토큰의 정보", required = true)
     })
 
-    public ResponseDTO<?> logout( @ApiIgnore @RequestHeader(name = "Authorization") String header) {
+    public ResponseDTO<?> logout(@ApiIgnore @RequestHeader(name = "Authorization") String header) {
         return tokenService.logout(header);
     }
     @PostMapping("/api/user")
@@ -70,7 +71,11 @@ public class AuthController {
             @ApiImplicitParam(name = "email", value = "사용자 식별 이메일", required = true),
             @ApiImplicitParam(name = "password", value = "사용자 비밀번호", required = true),
     })
-    public ResponseDTO<?> editUser( @ApiIgnore @AuthenticationPrincipal LoginReqDTO loginReqDTO) {
+    public ResponseDTO<?> editUser(
+            @ApiIgnore
+            @RequestBody
+            @AuthenticationPrincipal
+            LoginReqDTO loginReqDTO) {
         return userService.editUser(loginReqDTO);
     }
 
@@ -83,7 +88,10 @@ public class AuthController {
             @ApiImplicitParam(name = "salary", value = "연봉", required = true),
             @ApiImplicitParam(name = "job", value = "직업", required = true),
     })
-    public ResponseDTO<?> updateUser( @ApiIgnore @AuthenticationPrincipal LoginReqDTO loginReqDTO, PatchUserReqDTO patchUserReqDTO) {
+    public ResponseDTO<?> updateUser(
+            @ApiIgnore
+            @RequestBody
+            @AuthenticationPrincipal LoginReqDTO loginReqDTO, PatchUserReqDTO patchUserReqDTO) {
         return userService.updateUser(loginReqDTO,patchUserReqDTO);
     }
 
@@ -93,7 +101,11 @@ public class AuthController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "password", value = "비밀번호", required = true),
     })
-    public ResponseDTO<?> deleteUser( @ApiIgnore @AuthenticationPrincipal LoginReqDTO loginReqDTO, String password) {
+    public ResponseDTO<?> deleteUser(
+            @ApiIgnore
+            @RequestBody
+            @AuthenticationPrincipal
+            LoginReqDTO loginReqDTO, String password) {
         return userService.deleteUser(loginReqDTO,password);
     }
 

@@ -14,8 +14,7 @@ public class PatchUserResDTO {
     private String email;
     private String password;
     private String name;
-    private int age;
-    private String gender;
+    private String birth;
     private String phone;
     private Long salary;
     private String job;
@@ -25,8 +24,7 @@ public class PatchUserResDTO {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.name = user.getName();
-        this.age = user.getAge();
-        this.gender = user.getGender();
+        this.birth = user.getBirth();
         this.phone = user.getPhone();
         this.salary = user.getSalary();
         this.job = user.getJob();

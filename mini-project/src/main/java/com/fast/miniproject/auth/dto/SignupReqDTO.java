@@ -13,26 +13,18 @@ public class SignupReqDTO {
     private String email;
     private String password;
     private String name;
-    private int age;
-    private String gender;
+    private String birth;
     private String phone;
     private Long salary;
     private String job;
 
     public User toEntity(){
-        switch (gender){
-            case "MALE": this.gender="m";
-                  break;
-            case "FEMALE":this.gender="f";
-                  break;
-            default: this.gender="e";//error
-        }
+
         return User.builder()
                 .email(this.email)
                 .password(this.password)
                 .name(this.name)
-                .age(this.age)
-                .gender(this.gender)
+                .birth(this.birth)
                 .phone(this.phone)
                 .salary(this.salary)
                 .job(this.job)
