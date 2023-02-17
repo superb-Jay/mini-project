@@ -46,7 +46,7 @@ public class ProductController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "products_id_list", value = "구매할 상품 ID 리스트", required = true)
     })
-    public ResponseDTO<?> buyProducts(@ApiIgnore @AuthenticationPrincipal LoginReqDTO user, ProductIdList products_id_list){
+    public ResponseDTO<?> buyProducts(@ApiIgnore @AuthenticationPrincipal LoginReqDTO user, @RequestBody ProductIdList products_id_list){
         return productService.buyProduct(products_id_list.getProducts_id_list(),user);
     }
 
