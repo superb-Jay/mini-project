@@ -93,6 +93,7 @@ public class ProductServiceImpl implements ProductService {
             Orders orders = new Orders(user);
             toSave(productList,orders);
             orderRepository.save(orders);
+            basketRepository.deleteByUserAndProductList(user.getMemberId(),products_id_list);
             return new ResponseDTO<>("상품 구매에 성공하였습니다.");
         }catch (Exception e){
             return new ErrorResponseDTO(500,"구매에 실패하였습니다.").toResponse();
