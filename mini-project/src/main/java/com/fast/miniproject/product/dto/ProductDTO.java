@@ -24,15 +24,16 @@ public class ProductDTO {
     private double rate;
 
     private String detail;
+    private Long productId;
 
     public ProductDTO(Product product){
-
         this.price = product.getPrice();
         this.brand = product.getBrand();
         this.logo = product.getLogo();
         this.name = product.getName();
         this.rate = product.getRate();
         this.detail = product.getDetail();
+        this.productId=product.getProductId();
     }
 
 }

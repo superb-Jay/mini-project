@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
         try{
             List<Product> product = productRepository.findAll();
             List<ProductDTO> productList = product.stream()
-                    .map(pro -> new ProductDTO(pro.getPrice(),pro.getBrand(),pro.getLogo(),pro.getName(),pro.getRate(),pro.getDetail()))
+                    .map(pro -> new ProductDTO(pro.getPrice(),pro.getBrand(),pro.getLogo(),pro.getName(),pro.getRate(),pro.getDetail(),pro.getProductId()))
                     .collect(Collectors.toList());
             return new ResponseDTO<>(productList);
         }catch(Exception e){
@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
             List<Product> product = productRepository.findByPriceLessThanEqual(limitAmount);
 
             List<ProductDTO> productList = product.stream()
-                    .map(pro -> new ProductDTO(pro.getPrice(),pro.getBrand(),pro.getLogo(),pro.getName(),pro.getRate(),pro.getDetail()))
+                    .map(pro -> new ProductDTO(pro.getPrice(),pro.getBrand(),pro.getLogo(),pro.getName(),pro.getRate(),pro.getDetail(),pro.getProductId()))
                     .collect(Collectors.toList());
 
             return new ResponseDTO<>(productList);
