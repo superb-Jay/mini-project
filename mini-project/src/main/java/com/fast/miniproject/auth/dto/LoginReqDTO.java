@@ -21,12 +21,6 @@ public class LoginReqDTO {
     private String email;
     private String password;
 
-    public User toEntity(){
-        return User.builder()
-                .email(this.email)
-                .password(this.password)
-                .build();
-    }
 
     public LoginReqDTO(Claims claims){
         this.email=claims.get("email",String.class);
