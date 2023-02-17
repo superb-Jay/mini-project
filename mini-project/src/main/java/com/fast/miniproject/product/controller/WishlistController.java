@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = {"위시리스트 기능"}, description = "상품 추가, 상품 삭제")
 @RestController
@@ -35,16 +32,16 @@ public class WishlistController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "productId", value = "productId", required = true)
     })
-    public ResponseDTO<?> addWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO, WishlistAddRequestDTO requestDTO) {
+    public ResponseDTO<?> addWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody WishlistAddRequestDTO requestDTO) {
         return wishlistService.addWishlist(loginReqDTO, requestDTO);
     }
 
     @DeleteMapping("/wishlist/delete")
     @ApiOperation(value = "위시리스트에 상품 삭제 (토큰 0)", notes = "basketId를 통한 상품 삭제")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "basketId", value = "basketId", required = true),
+            @ApiImplicitParam(name = "wishlistId", value = "wishlistId", required = true),
     })
-    public ResponseDTO<?> deleteWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO, WishlistDeleteRequestDTO requestDTO) {
+    public ResponseDTO<?> deleteWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody WishlistDeleteRequestDTO requestDTO) {
         return wishlistService.deleteWishlist(loginReqDTO, requestDTO);
     }
 
@@ -53,7 +50,7 @@ public class WishlistController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "productId", value = "productId", required = true)
     })
-    public ResponseDTO<?> addBasketFromWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO, WishlistAddRequestDTO requestDTO) {
+    public ResponseDTO<?> addBasketFromWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody WishlistAddRequestDTO requestDTO) {
         return wishlistService.addBasketFromWishlist(loginReqDTO, requestDTO);
     }
 
