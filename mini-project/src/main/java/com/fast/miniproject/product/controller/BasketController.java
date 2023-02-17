@@ -7,10 +7,7 @@ import com.fast.miniproject.product.dto.BasketDeleteRequestDTO;
 import com.fast.miniproject.product.service.BasketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,12 +21,12 @@ public class BasketController {
     }
 
     @DeleteMapping("/basket/delete")
-    public ResponseDTO<?> deleteBasket(@AuthenticationPrincipal LoginReqDTO loginReqDTO, BasketDeleteRequestDTO request) {
+    public ResponseDTO<?> deleteBasket(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody BasketDeleteRequestDTO request) {
         return basketService.deleteBasket(loginReqDTO, request);
     }
 
     @PostMapping("/basket/add")
-    public ResponseDTO<?> addBasket(@AuthenticationPrincipal LoginReqDTO loginReqDTO, BasketAddRequestDTO requestDTO) {
+    public ResponseDTO<?> addBasket(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody BasketAddRequestDTO requestDTO) {
         return basketService.addBasket(loginReqDTO ,requestDTO);
     }
 }
