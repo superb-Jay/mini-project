@@ -3,6 +3,10 @@ package com.fast.miniproject.search.controller;
 import com.fast.miniproject.global.response.PageResponseDTO;
 import com.fast.miniproject.global.response.ResponseDTO;
 import com.fast.miniproject.search.service.SearchProductService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = {"검색 서비스"}, description = "검색 결과 반환 하는 서비스")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/search")
@@ -19,7 +24,11 @@ public class SearchProductController {
 
     private final SearchProductService searchProductService;
     public static final int PAGE_SIZE = 5;
-
+    @ApiOperation(value = "검색 결과 반환", notes = "검색어에 따른 상품 리스트 페이징과 함께 반환")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "검색어", required = true),
+            @ApiImplicitParam(name = "page", value = "페이지")
+    })
     @GetMapping
     public ResponseDTO<PageResponseDTO> getProductByName(@RequestParam String name, @RequestParam(required = false, defaultValue = "0") String page) {
         PageRequest pageRequest = null;
