@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 public class PatchUserReqDTO {
 
-    private String OldPassword;
+    private String oldPassword;
     private String newPassword;
     private String phone;
     private Long salary;
