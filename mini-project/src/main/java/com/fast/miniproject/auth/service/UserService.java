@@ -1,5 +1,6 @@
 package com.fast.miniproject.auth.service;
 
+import com.fast.miniproject.auth.dto.DeleteUserReqDTO;
 import com.fast.miniproject.auth.dto.LoginReqDTO;
 import com.fast.miniproject.auth.dto.PatchUserReqDTO;
 import com.fast.miniproject.auth.dto.SignupReqDTO;
@@ -11,5 +12,5 @@ public interface UserService {
     ResponseDTO<?> login(LoginReqDTO loginReqDTO);
     public ResponseDTO<?> editUser(LoginReqDTO loginReqDTO) ;
     public ResponseDTO<?> updateUser(LoginReqDTO loginReqDTO, PatchUserReqDTO patchUserReqDTO);
-    public ResponseDTO<?> deleteUser(LoginReqDTO loginReqDTO, String password);
+    public ResponseDTO<?> deleteUser(LoginReqDTO loginReqDTO, DeleteUserReqDTO deleteUserReqDTO);
 }

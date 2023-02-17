@@ -1,9 +1,6 @@
 package com.fast.miniproject.auth.service.Impl;
 
-import com.fast.miniproject.auth.dto.LoginReqDTO;
-import com.fast.miniproject.auth.dto.SignupReqDTO;
-import com.fast.miniproject.auth.dto.PatchUserReqDTO;
-import com.fast.miniproject.auth.dto.PatchUserResDTO;
+import com.fast.miniproject.auth.dto.*;
 import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.auth.jwt.JwtProvider;
 import com.fast.miniproject.auth.repository.UserRepository;
@@ -86,12 +83,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> deleteUser(LoginReqDTO loginReqDTO,String password) {
+    public ResponseDTO<?> deleteUser(LoginReqDTO loginReqDTO, DeleteUserReqDTO deleteUserReqDTO) {
         try {
             User user = userRepository.findByEmail(loginReqDTO.getEmail())
                     .orElseThrow(IllegalArgumentException::new);
 
-            passwordMustBeSame(password, user.getPassword());
+            passwordMustBeSame(deleteUserReqDTO.getPassword(), user.getPassword());
             user.delete("withdraw");
 
             return new ResponseDTO<>(200,"회원 탈퇴 성공.",user);
