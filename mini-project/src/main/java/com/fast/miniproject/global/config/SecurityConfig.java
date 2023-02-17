@@ -48,8 +48,8 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable() // rest api이므로 csrf 보안이 필요없으므로 disable처리 // 다른곳에서는 요청을 보낼수 없게 한다. 주소 다이렉트입력
                 .httpBasic().disable() // 기본설정 사용안함. 기본설정은 비인증시 로그인폼 화면으로 리다이렉트 된다.
-                .formLogin().loginPage("/login").permitAll()//로그인 기본 url 설정
-                .and()
+//                .formLogin().loginPage("/login").permitAll()//로그인 기본 url 설정
+//                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt token으로 인증할것이므로 세션필요없으므로 생성안함.
                 .and()
                 .addFilterBefore( // 시큐리티 필터가 작동하기전에 먼저 내가 만든 필터를 먼저 들어가서 확인해라.
