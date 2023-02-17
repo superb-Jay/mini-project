@@ -12,12 +12,14 @@ import com.fast.miniproject.product.dto.PurchasedProductDto;
 import com.fast.miniproject.product.entity.Orders;
 import com.fast.miniproject.product.entity.Product;
 import com.fast.miniproject.product.entity.PurchasedProduct;
+import com.fast.miniproject.product.repository.BasketRepository;
 import com.fast.miniproject.product.repository.OrderRepository;
 import com.fast.miniproject.product.repository.ProductRepository;
 import com.fast.miniproject.product.repository.PurchaseProductRepository;
 import com.fast.miniproject.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +30,10 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-
-
     private final UserRepository userRepository;
     private final PurchaseProductRepository purchaseProductRepository;
     private final OrderRepository orderRepository;
+    private final BasketRepository basketRepository;
 
 
     @Override
@@ -49,22 +50,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseDTO<?> selectProduct() {
-
         try{
-
-
             List<Product> product = productRepository.findAll();
-
-
             List<ProductDTO> productList = product.stream()
                     .map(pro -> new ProductDTO(pro.getPrice(),pro.getBrand(),pro.getLogo(),pro.getName(),pro.getRate(),pro.getDetail()))
                     .collect(Collectors.toList());
-
             return new ResponseDTO<>(productList);
         }catch(Exception e){
             return new ErrorResponseDTO(500,"상품 목록을 불러오지 못 했습니다").toResponse();
         }
-
     }
 
     @Override
@@ -89,6 +83,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ResponseDTO<?> buyProduct(ArrayList<Integer> products_id_list, LoginReqDTO dto) {
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(IllegalArgumentException::new);
         List<Product> productList = productRepository.findAllByProductId(products_id_list);
@@ -98,6 +93,7 @@ public class ProductServiceImpl implements ProductService {
             Orders orders = new Orders(user);
             toSave(productList,orders);
             orderRepository.save(orders);
+            basketRepository.deleteByUserAndProductList(user.getMemberId(),products_id_list);
             return new ResponseDTO<>("상품 구매에 성공하였습니다.");
         }catch (Exception e){
             return new ErrorResponseDTO(500,"구매에 실패하였습니다.").toResponse();
