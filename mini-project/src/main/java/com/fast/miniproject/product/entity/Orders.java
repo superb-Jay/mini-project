@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,7 +15,6 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name="orders")
-@ToString
 public class Orders {
 
     @Id
@@ -21,7 +22,7 @@ public class Orders {
     @Column(name = "order_id")
     private Long orderId;
 
-    @ManyToOne(targetEntity= User.class, fetch=FetchType.EAGER)
+    @ManyToOne(targetEntity= User.class, fetch=FetchType.LAZY)
     @JoinColumn(name="member")
     private User user;
 
@@ -33,4 +34,12 @@ public class Orders {
     public Orders(User user) {
         this.user = user;
     }
+
+    @OneToMany(
+            mappedBy = "orders",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private List<PurchasedProduct> purchasedProducts = new ArrayList<>();
+
 }
