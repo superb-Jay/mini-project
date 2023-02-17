@@ -35,8 +35,6 @@ public class BasketServiceImpl implements BasketService {
         User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
         List<Basket> basketList = basketRepository.findAllByUser(user);
 
-//        return new ResponseDTO<>(basketList.stream().map(en -> new BasketResponseDTO(en))
-//                .collect(Collectors.toList()));
         return new ResponseDTO<>(basketList.stream()
                 .map(BasketResponseDTO::new)
                 .collect(Collectors.toList()));

@@ -15,7 +15,7 @@ public class Wishlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wish_id")
-    private Long wishId;
+    private Long wishlistId;
 
     @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "product")
