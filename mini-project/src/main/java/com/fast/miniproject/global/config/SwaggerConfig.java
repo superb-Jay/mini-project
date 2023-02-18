@@ -2,20 +2,19 @@ package com.fast.miniproject.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.HttpAuthenticationScheme;
-import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @EnableWebMvc
@@ -26,7 +25,10 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public Docket api() {
+        Server serverLocal = new Server("local", "http://localhost:8080", "for local", Collections.emptyList(), Collections.emptyList());
+        Server devServer = new Server("test", "http://52.78.32.230:8080/", "for test", Collections.emptyList(), Collections.emptyList());
         return new Docket(DocumentationType.OAS_30) // 3.0 문서버전으로 세팅
+                .servers(serverLocal,devServer)
                 .groupName("미니프로젝트 3조")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.fast.miniproject"))
@@ -35,6 +37,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .build()
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
                 .securityContexts(List.of(securityContext()))
                 .securitySchemes(List.of(bearerAuthSecurityScheme()));
 
