@@ -21,7 +21,7 @@ public class TokenServiceImpl implements TokenService {
         }else {
             try {
                 tokenRepository.save(Token.builder().token(token).build());
-                return new ResponseDTO<>(null);
+                return new ResponseDTO<>(200,"로그아웃 성공",token);
             } catch (Exception e) {
                 return new ErrorResponseDTO(500,"로그아웃 시도중 에러가 발생 했습니다.").toResponse();
             }
