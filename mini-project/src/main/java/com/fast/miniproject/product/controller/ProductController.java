@@ -16,6 +16,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(tags = {"상품 관련 서비스"}, description = "상품 전체 조회, 상품 상세 조회, 상품 추천, 주문, 주문 확인, 주문 취소")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     private final ProductService productService;
