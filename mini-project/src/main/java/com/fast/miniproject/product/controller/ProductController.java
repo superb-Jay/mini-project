@@ -16,14 +16,13 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(tags = {"상품 관련 서비스"}, description = "상품 전체 조회, 상품 상세 조회, 상품 추천, 주문, 주문 확인, 주문 취소")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     private final ProductService productService;
 
     @ApiOperation(value = "상품 상세 정보 반환(토큰X)", notes = "상품 상세 정보를 반환하는 API")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "products_id", value = "상품 ID", required = true)
-    })
+
     @GetMapping("/product/detail")
     public ResponseDTO<?> productDetail(@RequestParam Long products_id){
         return productService.selectProductDetail(products_id);
@@ -43,9 +42,7 @@ public class ProductController {
 
     @PostMapping("/products/buy")
     @ApiOperation(value = "상품(들) 구매", notes = "상품(들)을 구매하는 API")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "products_id_list", value = "구매할 상품 ID 리스트", required = true)
-    })
+
     public ResponseDTO<?> buyProducts(@ApiIgnore @AuthenticationPrincipal LoginReqDTO user, @RequestBody ProductIdList products_id_list){
         return productService.buyProduct(products_id_list.getProducts_id_list(),user);
     }
@@ -58,9 +55,7 @@ public class ProductController {
 
     @DeleteMapping("/product/order/delete")
     @ApiOperation(value = "주문 취소", notes = "주문을 취소하는 API")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "orderId", value = "주문 ID", required = true)
-    })
+
     public ResponseDTO<?> deleteBuy(@ApiIgnore @AuthenticationPrincipal LoginReqDTO dto,@RequestParam Long orderId){
         return productService.deleteOrder(dto,orderId);
     }
