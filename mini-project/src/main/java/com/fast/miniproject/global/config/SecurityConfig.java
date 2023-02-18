@@ -12,6 +12,9 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -40,6 +43,8 @@ public class SecurityConfig {
         //시큐리티 필터는 보호막 같은 놈.
 
         return http
+                .cors() // cors 관련 추가
+                .and()
                 .authorizeRequests()// 다음 리퀘스트에 대한 사용권한 체크
                 .mvcMatchers(PUBLIC_URLS).permitAll() // 가입 및 인증 주소는 누구나 접근가능
                 .and()
@@ -64,6 +69,22 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() { //시큐리티 filter 제외, 그러나 OncePerRequestFilter는 시큐리티 필터가 아니라서 로직실행
         return (web) -> web.ignoring().mvcMatchers(PUBLIC_URLS);
     }
+
+    //Cors 설정
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        var configuration = new CorsConfiguration();
+
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.addExposedHeader("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 
 
 }

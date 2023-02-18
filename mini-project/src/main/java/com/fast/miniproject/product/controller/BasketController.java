@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"장바구니 기능"}, description = "상품 추가, 상품 삭제")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class BasketController {
 
     private final BasketService basketService;
@@ -28,18 +29,14 @@ public class BasketController {
 
     @DeleteMapping("/basket/delete")
     @ApiOperation(value = "장바구니에 상품 삭제 (토큰 0)", notes = "basketId를 통한 상품 삭제")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "basketId", value = "basketId", required = true),
-    })
+
     public ResponseDTO<?> deleteBasket(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody BasketDeleteRequestDTO request) {
         return basketService.deleteBasket(loginReqDTO, request);
     }
 
     @PostMapping("/basket/add")
     @ApiOperation(value = "장바구니에 상품 추가 (토큰 0)", notes = "productId를 통한 상품 추가")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "productId", value = "productId", required = true)
-    })
+
     public ResponseDTO<?> addBasket(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody BasketAddRequestDTO requestDTO) {
         return basketService.addBasket(loginReqDTO ,requestDTO);
     }
