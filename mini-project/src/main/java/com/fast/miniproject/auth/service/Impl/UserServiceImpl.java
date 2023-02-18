@@ -44,10 +44,10 @@ public class UserServiceImpl implements UserService {
                 return new ErrorResponseDTO(500, "탈퇴한 회원입니다.").toResponse();
             }
             passwordMustBeSame(loginReqDTO.getPassword(), user.getPassword());
-            return new ResponseDTO<>(jwtProvider.makeJwtToken(user));
-        } catch (NoSuchElementException e) {
-            return new ErrorResponseDTO(500, "로그인에 실패하였습니다.").toResponse();
-        } catch (IllegalArgumentException e) {
+            String token = jwtProvider.makeJwtToken(user);
+            return new ResponseDTO<>(new TokenDTO(token));
+
+        } catch (NoSuchElementException | IllegalArgumentException e) {
             return new ErrorResponseDTO(500, "로그인에 실패하였습니다.").toResponse();
         }
 
