@@ -19,7 +19,6 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(tags = {"회원정보 서비스"}, description = "회원가입, 회원정보수정, 회원탈퇴,")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final UserService userService;

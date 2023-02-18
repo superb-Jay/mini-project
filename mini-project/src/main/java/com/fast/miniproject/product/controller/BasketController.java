@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"장바구니 기능"}, description = "상품 추가, 상품 삭제")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class BasketController {
 
     private final BasketService basketService;

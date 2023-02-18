@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"위시리스트 기능"}, description = "상품 추가, 상품 삭제")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class WishlistController {
     private final WishlistService wishlistService;
     private final BasketService basketService;
