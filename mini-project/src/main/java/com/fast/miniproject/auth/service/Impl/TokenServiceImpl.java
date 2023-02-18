@@ -15,12 +15,12 @@ public class TokenServiceImpl implements TokenService {
     private final TokenRepository tokenRepository;
 
     @Override
-    public ResponseDTO<?> logout(String header){
-        if (checkLogout(header)){
+    public ResponseDTO<?> logout(String token){
+        if (checkLogout(token)){
             return new ErrorResponseDTO(500,"이미 만료된 토큰입니다.").toResponse();
         }else {
             try {
-                tokenRepository.save(Token.builder().token(header).build());
+                tokenRepository.save(Token.builder().token(token).build());
                 return new ResponseDTO<>(null);
             } catch (Exception e) {
                 return new ErrorResponseDTO(500,"로그아웃 시도중 에러가 발생 했습니다.").toResponse();
