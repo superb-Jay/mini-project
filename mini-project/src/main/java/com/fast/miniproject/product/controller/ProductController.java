@@ -34,7 +34,7 @@ public class ProductController {
     }
 
     @ApiOperation(value = "상품 추천 리스트 반환", notes = "사용자가 가입 가능한 상품 리스트를 반환하는 API")
-    @GetMapping("/api/products/recommend")
+    @GetMapping("/api/products/recommends")
     public ResponseDTO<?> recommendProduct(@ApiIgnore @AuthenticationPrincipal LoginReqDTO loginReqDTO){
         return productService.recommendProduct(loginReqDTO.getEmail());
     }
