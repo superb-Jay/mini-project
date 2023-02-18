@@ -21,20 +21,20 @@ public class BasketController {
 
     private final BasketService basketService;
 
-    @GetMapping("/basket")
+    @GetMapping("/api/basket")
     @ApiOperation(value = "장바구니 (토큰 0)", notes = "상품 목록 조회")
     public ResponseDTO<?> listBasket(@AuthenticationPrincipal LoginReqDTO loginReqDTO) {
         return basketService.listBasketDTO(loginReqDTO);
     }
 
-    @DeleteMapping("/basket/delete")
+    @DeleteMapping("/api/basket")
     @ApiOperation(value = "장바구니에 상품 삭제 (토큰 0)", notes = "basketId를 통한 상품 삭제")
 
     public ResponseDTO<?> deleteBasket(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody BasketDeleteRequestDTO request) {
         return basketService.deleteBasket(loginReqDTO, request);
     }
 
-    @PostMapping("/basket/add")
+    @PostMapping("/api/basket")
     @ApiOperation(value = "장바구니에 상품 추가 (토큰 0)", notes = "productId를 통한 상품 추가")
 
     public ResponseDTO<?> addBasket(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody BasketAddRequestDTO requestDTO) {
