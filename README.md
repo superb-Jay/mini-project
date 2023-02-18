@@ -8,10 +8,32 @@
 ## 구현 기능
 <br>
 <br>
+
 ## 개발 환경
-<br>
-<br>
+
+- Spring Boot
+- JAVA 11
+- Spring Data JPA
+- Spring Security
+- Lombok
+- Gradle
+- AWS EC2
+- Maira DB
+- Swagger, PostMan
+
+
 ## 팀 소개
+
+- [김재성✨](https://github.com/kimjaeseong1)
+  - 상품리스트, 구매가능리스트
+- [이규석](https://github.com/cutegyuseok)
+  - 로그인, 상품상세정보, 구매관련
+- [장재학](https://github.com/superb-Jay)
+  - 로그인, 회원가입
+- [주우민](https://github.com/zoomin3022)
+  - 상품검색, 페이징
+- [김태윤](https://github.com/lala9663)
+  - 장바구니, 위시리스트  
 
 
 # Stacks
