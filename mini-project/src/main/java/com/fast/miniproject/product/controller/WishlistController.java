@@ -22,27 +22,27 @@ public class WishlistController {
     private final WishlistService wishlistService;
     private final BasketService basketService;
 
-    @GetMapping("/wishlist")
+    @GetMapping("/api/wishlists")
     @ApiOperation(value = "위시리스트 (토큰 0)", notes = "상품 목록 조회")
     public ResponseDTO<?> listWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO) {
         return wishlistService.listWishlistDTO(loginReqDTO);
     }
 
-    @PostMapping("/wishlist/add")
+    @PostMapping("/api/wishlists")
     @ApiOperation(value = "위시리스트에 상품 추가 (토큰 0)", notes = "productId를 통한 상품 추가")
 
     public ResponseDTO<?> addWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody WishlistAddRequestDTO requestDTO) {
         return wishlistService.addWishlist(loginReqDTO, requestDTO);
     }
 
-    @DeleteMapping("/wishlist/delete")
+    @DeleteMapping("/api/wishlists")
     @ApiOperation(value = "위시리스트에 상품 삭제 (토큰 0)", notes = "basketId를 통한 상품 삭제")
 
     public ResponseDTO<?> deleteWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody WishlistDeleteRequestDTO requestDTO) {
         return wishlistService.deleteWishlist(loginReqDTO, requestDTO);
     }
 
-    @PostMapping("/wishlist/addBasket")
+    @PostMapping("/api/wishlists/addBasket")
     @ApiOperation(value = "위시리스트에서 장바구니에 추가 (토큰 0)", notes = "productId를 통한 상품 추가")
 
     public ResponseDTO<?> addBasketFromWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody WishlistAddRequestDTO requestDTO) {
