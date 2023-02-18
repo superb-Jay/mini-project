@@ -42,11 +42,5 @@ public class WishlistController {
         return wishlistService.deleteWishlist(loginReqDTO, requestDTO);
     }
 
-    @PostMapping("/api/wishlists/addBasket")
-    @ApiOperation(value = "위시리스트에서 장바구니에 추가 (토큰 0)", notes = "productId를 통한 상품 추가")
-
-    public ResponseDTO<?> addBasketFromWishlist(@AuthenticationPrincipal LoginReqDTO loginReqDTO,@RequestBody WishlistAddRequestDTO requestDTO) {
-        return wishlistService.addBasketFromWishlist(loginReqDTO, requestDTO);
-    }
 
 }

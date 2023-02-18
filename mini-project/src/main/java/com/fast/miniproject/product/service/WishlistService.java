@@ -13,5 +13,4 @@ public interface WishlistService {
 
     public ResponseDTO<?> addWishlist(LoginReqDTO loginReqDTO, WishlistAddRequestDTO requestDTO);
 
-    public ResponseDTO<?> addBasketFromWishlist(LoginReqDTO loginReqDTO, WishlistAddRequestDTO requestDTO);
 }
