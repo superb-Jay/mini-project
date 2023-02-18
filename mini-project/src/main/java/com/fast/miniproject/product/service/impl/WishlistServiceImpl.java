@@ -76,21 +76,4 @@ public class WishlistServiceImpl implements WishlistService {
 
     }
 
-    @Transactional
-    public ResponseDTO<?> addBasketFromWishlist(LoginReqDTO loginReqDTO, WishlistAddRequestDTO requestDTO) {
-        Product product = productRepository.findByProductId(requestDTO.getProductId()).get();
-        User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
-        try {
-            if (basketRepository.existsByProductAndUser(product, user)) {
-                return new ErrorResponseDTO(500, "이미 장바구니에 있는 상품입니다.").toResponse();
-            } else {
-                basketRepository.save(new Basket(product, user));
-            }
-        } catch (Exception e) {
-            return new ErrorResponseDTO(500, "장바구니 담기 실패").toResponse();
-        }
-        return new ResponseDTO<>(200, "장바구니 담기 성공", null);
-    }
-
-
 }
