@@ -1,6 +1,8 @@
 package com.fast.miniproject.auth.dto;
 
 import com.fast.miniproject.auth.entity.User;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 
@@ -9,14 +11,22 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@ApiModel(value = "회원정보수정 출력")
 public class PatchUserResDTO {
 
+    @ApiModelProperty(value = "이메일")
     private String email;
+    @ApiModelProperty(value = "비밀번호")
     private String password;
+    @ApiModelProperty(value = "이름")
     private String name;
+    @ApiModelProperty(value = "생년월일")
     private String birth;
+    @ApiModelProperty(value = "전화번호")
     private String phone;
+    @ApiModelProperty(value = "연봉")
     private Long salary;
+    @ApiModelProperty(value = "직업")
     private String job;
 
 
