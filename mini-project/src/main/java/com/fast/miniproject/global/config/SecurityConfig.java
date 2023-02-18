@@ -22,7 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_URLS = { //이 URL은 권한 검사안함
-            "/register", "/login" , "/index", "/products**", "/logout", "/product/detail**",
+            "/register", "/login" , "/index", "/products**", "/logout", "/product/detail**","/search",
 
             /* swagger v3 */
             "/swagger-resources/**",
