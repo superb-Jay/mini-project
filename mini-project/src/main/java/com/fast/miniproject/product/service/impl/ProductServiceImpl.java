@@ -106,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
         try {
            List<Orders> orderList =  orderRepository.findAllByUserOrderByPurchaseDate(user);
            ArrayList<PurchasedProduct> list = purchaseProductRepository.findAllByOrdersList(orderList);
-           return new ResponseDTO<>(getList(list));
+           return new ResponseDTO<>(parsingByOrders(list));
         }catch (Exception e){
 
         }
@@ -154,7 +154,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private ArrayList<OrderHistory> getList(ArrayList<PurchasedProduct> purchasedProducts){
+    private ArrayList<OrderHistory> parsingByOrders(ArrayList<PurchasedProduct> purchasedProducts){
         ArrayList<OrderHistory> orderHistoryArrayList = new ArrayList<>();
         ArrayList<PurchasedProductDto> toShowList = new ArrayList<>();
         Orders order = null;
