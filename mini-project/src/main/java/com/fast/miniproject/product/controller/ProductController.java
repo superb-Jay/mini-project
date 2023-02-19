@@ -1,6 +1,7 @@
 package com.fast.miniproject.product.controller;
 
 import com.fast.miniproject.auth.dto.LoginReqDTO;
+import com.fast.miniproject.product.dto.DeleteOrdersIdReqDTO;
 import com.fast.miniproject.product.dto.ProductIdList;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -55,7 +56,7 @@ public class ProductController {
     @DeleteMapping("/api/orders")
     @ApiOperation(value = "주문 취소", notes = "주문을 취소하는 API")
 
-    public ResponseDTO<?> deleteBuy(@ApiIgnore @AuthenticationPrincipal LoginReqDTO dto,@RequestParam Long orderId){
-        return productService.deleteOrder(dto,orderId);
+    public ResponseDTO<?> deleteBuy(@ApiIgnore @AuthenticationPrincipal LoginReqDTO dto, @RequestBody DeleteOrdersIdReqDTO reqDTO){
+        return productService.deleteOrder(dto,reqDTO.getOrderId());
     }
 }
