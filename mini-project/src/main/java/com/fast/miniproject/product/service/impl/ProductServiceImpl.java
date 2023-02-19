@@ -154,7 +154,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    public ArrayList<OrderHistory> getList(ArrayList<PurchasedProduct> purchasedProducts){
+    private ArrayList<OrderHistory> getList(ArrayList<PurchasedProduct> purchasedProducts){
         ArrayList<OrderHistory> orderHistoryArrayList = new ArrayList<>();
         ArrayList<PurchasedProductDto> toShowList = new ArrayList<>();
         Orders order = null;
