@@ -1,6 +1,5 @@
 package com.fast.miniproject.auth.dto;
 
-import com.fast.miniproject.auth.entity.User;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
