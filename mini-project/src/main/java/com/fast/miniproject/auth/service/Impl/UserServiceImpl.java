@@ -3,6 +3,7 @@ package com.fast.miniproject.auth.service.Impl;
 import com.fast.miniproject.auth.dto.*;
 import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.auth.jwt.JwtProvider;
+import com.fast.miniproject.auth.repository.RefreshTokenRepository;
 import com.fast.miniproject.auth.repository.UserRepository;
 import com.fast.miniproject.auth.service.UserService;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public ResponseDTO<?> signup(SignupReqDTO signupReqDTO) {
@@ -44,8 +46,9 @@ public class UserServiceImpl implements UserService {
                 return new ErrorResponseDTO(500, "탈퇴한 회원입니다.").toResponse();
             }
             passwordMustBeSame(loginReqDTO.getPassword(), user.getPassword());
-            String token = jwtProvider.makeJwtToken(user);
-            return new ResponseDTO<>(new TokenDTO(token));
+            TokenDTO tokenDTO = jwtProvider.makeJwtToken(user);
+            refreshTokenRepository.save(tokenDTO.toEntity());
+            return new ResponseDTO<>(tokenDTO);
 
         } catch (NoSuchElementException | IllegalArgumentException e) {
             return new ErrorResponseDTO(500, "로그인에 실패하였습니다.").toResponse();
@@ -55,9 +58,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseDTO<?> editUser(LoginReqDTO loginReqDTO) {
         try {
-            User user = userRepository.findByEmail(loginReqDTO.getEmail())
-                    .orElseThrow(IllegalArgumentException::new);
-            return new ResponseDTO<>(new PatchUserResDTO(user));
+            if(loginReqDTO != null) {
+                User user = userRepository.findByEmail(loginReqDTO.getEmail())
+                        .orElseThrow(IllegalArgumentException::new);
+                return new ResponseDTO<>(new PatchUserResDTO(user));
+            }else{
+                throw new IllegalArgumentException();
+            }
+
         }catch (IllegalArgumentException e) {
             return new ErrorResponseDTO(500, "로그인 정보가 없습니다.").toResponse();
         }
