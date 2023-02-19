@@ -25,11 +25,11 @@ public class SearchProductController {
     @ApiOperation(value = "검색 결과 반환", notes = "검색어에 따른 상품 리스트 페이징과 함께 반환")
 
     @GetMapping
-    public ResponseDTO<PageResponseDTO> getProductByName(@RequestParam String name, @RequestParam(required = false, defaultValue = "0") String page) {
+    public ResponseDTO<PageResponseDTO> getProductByName(@RequestParam String name, @RequestParam(required = false, defaultValue = "1") String page) {
         PageRequest pageRequest = null;
         try {
             int intPage = Integer.parseInt(page);
-            pageRequest = PageRequest.of(intPage, PAGE_SIZE);
+            pageRequest = PageRequest.of(intPage - 1, PAGE_SIZE);
             //정상적인 범위 내의 페이지 번호면 해당 페이지로
         } catch (IllegalArgumentException e) {
             pageRequest = PageRequest.of(0, PAGE_SIZE);

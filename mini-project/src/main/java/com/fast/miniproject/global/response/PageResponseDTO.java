@@ -19,7 +19,7 @@ public class PageResponseDTO {
         this.content = page.getContent();
         this.totalPages = page.getTotalPages();
         this.totalElements = page.getTotalElements();
-        this.pageNumber = page.getNumber();
+        this.pageNumber = page.getNumber() + 1;
         this.size = page.getSize();
     }
 }
