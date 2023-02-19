@@ -66,8 +66,8 @@ public class AuthController {
 
     @PostMapping("/refresh")
     @ApiOperation(value = "토큰 리프레시", notes = "리프레시 토큰을 보내주면 확인하고 엑세스토큰을 새로 발급")
-    public ResponseDTO<?> validateRefreshToken(@RequestBody RefreshTokenDTO refreshTokenDTO){
-        return refreshTokenService.validateRefreshToken(refreshTokenDTO.getRefreshToken());
+    public ResponseDTO<?> validateRefreshToken(@RequestBody RefreshTokenReqDTO refreshTokenReqDTO){
+        return refreshTokenService.validateRefreshToken(refreshTokenReqDTO.getRefreshToken());
 
     }
 
