@@ -13,7 +13,7 @@ public interface ProductService {
     ResponseDTO<?> selectProduct(Pageable pageable);
 
 
-    ResponseDTO<?> recommendProduct(String email);
+    ResponseDTO<?> recommendProduct(String email, Pageable pageable);
 
     ResponseDTO<?> buyProduct(ArrayList<Integer> products_id_list, LoginReqDTO user);
 

@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,21 +62,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseDTO<?> recommendProduct(String email) {
-
+    public ResponseDTO<?> recommendProduct(String email, Pageable pageable) {
         try {
 
             User user = userRepository.findByEmail(email).get();
 
             int limitAmount = (int) (user.getSalary() * 2);
 
-            List<Product> product = productRepository.findByPriceLessThanEqual(limitAmount);
+            Page<Product> product = productRepository.findByPriceLessThanEqual(limitAmount, pageable);
 
-            List<ProductDTO> productList = product.stream()
-                    .map(pro -> new ProductDTO(pro.getPrice(), pro.getBrand(), pro.getLogo(), pro.getName(), pro.getRate(), pro.getDetail(), pro.getProductId()))
-                    .collect(Collectors.toList());
+            Page<ProductDTO> productPage = product
+                    .map(ProductDTO::new);
 
-            return new ResponseDTO<>(productList);
+            return new ResponseDTO<>(new PageResponseDTO(productPage));
         } catch (Exception e) {
             return new ErrorResponseDTO(500, "추천 상품을 불러 오지 못 했습니다").toResponse();
         }
