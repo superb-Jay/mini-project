@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class SearchProductController {
 
     private final SearchProductService searchProductService;
-    public static final int PAGE_SIZE = 5;
+    public static final int PAGE_SIZE = 10;
     @ApiOperation(value = "검색 결과 반환", notes = "검색어에 따른 상품 리스트 페이징과 함께 반환")
 
     @GetMapping
