@@ -14,6 +14,8 @@ public class BasketResponseDTO {
     private String logo;
     private String name;
     private int price;
+    private String detail;
+    private double rate;
 
     public BasketResponseDTO(Basket basket) {
         this.basketId = basket.getBasketId();
@@ -22,5 +24,7 @@ public class BasketResponseDTO {
         this.logo = basket.getProduct().getLogo();
         this.name = basket.getProduct().getName();
         this.price = basket.getProduct().getPrice();
+        this.detail = basket.getProduct().getDetail();
+        this.rate = basket.getProduct().getRate();
     }
 }
