@@ -10,11 +10,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository<Product,Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    List<Product> findByPriceLessThanEqual(int price);
+    Page<Product> findByPriceLessThanEqual(int price, Pageable pageable);
 
-    @Query(nativeQuery = true,value = "SELECT * FROM product as p WHERE p.product_id IN (:id_list)")
+    @Query(nativeQuery = true, value = "SELECT * FROM product as p WHERE p.product_id IN (:id_list)")
     List<Product> findAllByProductId(@Param("id_list") List<Integer> id_list);
 
     Optional<Product> findByProductId(Long id);
