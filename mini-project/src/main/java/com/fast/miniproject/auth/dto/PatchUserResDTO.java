@@ -28,9 +28,10 @@ public class PatchUserResDTO {
     private Long salary;
     @ApiModelProperty(value = "직업")
     private String job;
+    private Long availableAmount;
 
 
-    public PatchUserResDTO(User user) {
+    public PatchUserResDTO(User user,Long availableAmount) {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.name = user.getName();
@@ -38,5 +39,6 @@ public class PatchUserResDTO {
         this.phone = user.getPhone();
         this.salary = user.getSalary();
         this.job = user.getJob();
+        this.availableAmount = availableAmount;
     }
 }

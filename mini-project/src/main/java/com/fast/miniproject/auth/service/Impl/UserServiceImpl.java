@@ -8,6 +8,7 @@ import com.fast.miniproject.auth.repository.UserRepository;
 import com.fast.miniproject.auth.service.UserService;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
 import com.fast.miniproject.global.response.ResponseDTO;
+import com.fast.miniproject.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final ProductService productService;
 
     @Override
     public ResponseDTO<?> signup(SignupReqDTO signupReqDTO) {
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
             if(loginReqDTO != null) {
                 User user = userRepository.findByEmail(loginReqDTO.getEmail())
                         .orElseThrow(IllegalArgumentException::new);
-                return new ResponseDTO<>(new PatchUserResDTO(user));
+                return new ResponseDTO<>(new PatchUserResDTO(user,productService.availableAmount(user)));
             }else{
                 throw new IllegalArgumentException();
             }
