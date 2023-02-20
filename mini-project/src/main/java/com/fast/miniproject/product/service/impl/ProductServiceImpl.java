@@ -173,5 +173,16 @@ public class ProductServiceImpl implements ProductService {
         return orderHistoryArrayList;
     }
 
+    public Long availableAmount(User user){
+        long amount = user.getSalary()*2;
+        long sum;
+        try {
+            List<Orders> ordersList = orderRepository.findAllByUserOrderByPurchaseDate(user);
+             sum = purchaseProductRepository.searchSumByOrdersList(ordersList);
+        }catch (Exception e){
+           sum =0;
+        }
+        return amount-sum;
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.fast.miniproject.product.service;
 
 import com.fast.miniproject.auth.dto.LoginReqDTO;
+import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.global.response.ResponseDTO;
 import org.springframework.data.domain.Pageable;
 
@@ -20,4 +21,6 @@ public interface ProductService {
     ResponseDTO<?> orderCheck(LoginReqDTO dto);
 
     ResponseDTO<?> deleteOrder(LoginReqDTO dto, Long orderId);
+
+    Long availableAmount(User user);
 }
