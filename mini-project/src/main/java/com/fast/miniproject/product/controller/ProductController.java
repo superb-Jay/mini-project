@@ -43,8 +43,16 @@ public class ProductController {
 
     @ApiOperation(value = "상품 추천 리스트 반환", notes = "사용자가 가입 가능한 상품 리스트를 반환하는 API")
     @GetMapping("/api/products/recommends")
-    public ResponseDTO<?> recommendProduct(@ApiIgnore @AuthenticationPrincipal LoginReqDTO loginReqDTO) {
-        return productService.recommendProduct(loginReqDTO.getEmail());
+    public ResponseDTO<?> recommendProduct(@ApiIgnore @AuthenticationPrincipal LoginReqDTO loginReqDTO, @RequestParam(required = false, defaultValue = "1") String page) {
+        PageRequest pageRequest = null;
+        try {
+            int intPage = Integer.parseInt(page);
+            pageRequest = PageRequest.of(intPage - 1, PAGE_SIZE);
+        } catch (IllegalArgumentException e) {
+            pageRequest = PageRequest.of(0, PAGE_SIZE);
+        }
+        return productService.recommendProduct(loginReqDTO.getEmail(), pageRequest);
+        //return productService.recommendProduct(loginReqDTO.getEmail());
     }
 
     @PostMapping("/api/orders")
