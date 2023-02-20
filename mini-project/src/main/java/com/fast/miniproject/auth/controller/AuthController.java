@@ -2,6 +2,7 @@ package com.fast.miniproject.auth.controller;
 
 
 import com.fast.miniproject.auth.dto.*;
+import com.fast.miniproject.auth.service.RefreshTokenService;
 import com.fast.miniproject.auth.service.TokenService;
 import com.fast.miniproject.auth.service.UserService;
 import com.fast.miniproject.global.response.ResponseDTO;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 
-@Api(tags = {"회원정보 서비스"}, description = "회원가입, 회원정보수정, 회원탈퇴,")
+@Api(tags = {"회원정보 서비스"}, description = "회원가입, 회원정보수정, 회원탈퇴, 토큰 리프레시")
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
@@ -21,6 +22,7 @@ public class AuthController {
 
     private final UserService userService;
     private final TokenService tokenService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/register")
     @ApiOperation(value = "회원가입 (토큰 X)", notes = "정보를 입력받아 회원가입을 진행하고 DB에 저장하는")
@@ -60,6 +62,13 @@ public class AuthController {
             "로그인시 deleteCheck 값이 null이 아니면 탈퇴한 회원이라는 메세지를 안내")
     public ResponseDTO<?> deleteUser(@AuthenticationPrincipal LoginReqDTO loginReqDTO, @RequestBody DeleteUserReqDTO deleteUserReqDTO) {
         return userService.deleteUser(loginReqDTO,deleteUserReqDTO);
+    }
+
+    @PostMapping("/refresh")
+    @ApiOperation(value = "토큰 리프레시", notes = "리프레시 토큰을 보내주면 확인하고 엑세스토큰을 새로 발급")
+    public ResponseDTO<?> validateRefreshToken(@RequestBody RefreshTokenReqDTO refreshTokenReqDTO){
+        return refreshTokenService.validateRefreshToken(refreshTokenReqDTO.getRefreshToken());
+
     }
 
 }
