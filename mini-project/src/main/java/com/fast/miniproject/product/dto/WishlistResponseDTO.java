@@ -11,6 +11,8 @@ public class WishlistResponseDTO {
     private String logo;
     private String name;
     private int price;
+    private String detail;
+    private double rate;
 
 
     public WishlistResponseDTO(Wishlist wishlist) {
@@ -20,5 +22,7 @@ public class WishlistResponseDTO {
         this.logo = wishlist.getProduct().getLogo();
         this.name = wishlist.getProduct().getName();
         this.price = wishlist.getProduct().getPrice();
+        this.detail = wishlist.getProduct().getDetail();
+        this.rate = wishlist.getProduct().getRate();
     }
 }
