@@ -1,5 +1,6 @@
 package com.fast.miniproject.global.config;
 
+import com.fast.miniproject.auth.jwt.JwtExceptionFilter;
 import com.fast.miniproject.auth.jwt.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +22,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
+
+    private final JwtFilter jwtFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
+
+
     private static final String[] PUBLIC_URLS = { //이 URL은 권한 검사안함
-            "/register", "/login" , "/index", "/products**", "/logout", "/product/detail**","/search",
+            "/register", "/login", "/index", "/products**", "/logout", "/product/detail**", "/search",
 
             /* swagger v3 */
             "/swagger-resources/**",
@@ -30,7 +36,6 @@ public class SecurityConfig {
             "/swagger-ui/**"
     };
 
-    private final JwtFilter jwtFilter;
 
     @Bean //회원 insert 서비스에서 비밀번호 암호화/복호화에 사용됨
     public PasswordEncoder passwordEncoderParser() {
@@ -38,7 +43,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         //시큐리티 필터는 보호막 같은 놈.
 
@@ -61,7 +66,10 @@ public class SecurityConfig {
                         // 퍼블릭 URL은 시큐리티 필터에만 해당하므로 모든 요청에 jwt 필터가 먼저 동작하게된다. addFilterbefore 로 인하여.
                         // 물론 퍼블릭 url은 jwt 필터만 통과하면 시큐리티필터는 예외 처리 된다.
                         jwtFilter, // 요청을 할때마다 한번 거쳐가는 필터.
-                        UsernamePasswordAuthenticationFilter.class).build();
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtFilter.class).build();
+
+
         //인증을 처리하는 기본필터 UsernamePasswordAuthenticationFilter 대신 별도의 인증 로직을 가진 필터를 생성하고 사용하고 싶을 때 아래와 같이 필터를 등록하고 사용
     }
 
@@ -84,7 +92,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 
 
 }
