@@ -1,5 +1,6 @@
 package com.fast.miniproject.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,6 +40,7 @@ public class PurchasedProduct {
     private Product product;
 
     @ManyToOne(targetEntity = Orders.class,fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "orders")
     private Orders orders;
 
