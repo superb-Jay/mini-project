@@ -52,7 +52,6 @@ public class ProductController {
             pageRequest = PageRequest.of(0, PAGE_SIZE);
         }
         return productService.recommendProduct(loginReqDTO.getEmail(), pageRequest);
-        //return productService.recommendProduct(loginReqDTO.getEmail());
     }
 
     @PostMapping("/api/orders")
