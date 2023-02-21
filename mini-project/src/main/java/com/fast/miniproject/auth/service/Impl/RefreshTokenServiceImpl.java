@@ -32,7 +32,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             if (!claims.getExpiration().before(new Date())) {
                 String updateAccessToken = jwtProvider.recreationAccessToken(claims.get("email").toString());
                 return new ResponseDTO<>(200, "Refresh 토큰을 통한 Access Token 생성이 완료되었습니다",
-                        TokenDTO.builder().accessToken(updateAccessToken).build());
+                        TokenDTO.builder().accessToken(updateAccessToken).refreshToken(refreshToken).build());
             }else{
                 throw new IllegalArgumentException();
             }
