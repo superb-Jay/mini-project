@@ -43,32 +43,31 @@ public class JwtProvider {
     }
 
 
-    public LoginReqDTO tokenToUser(String accesstoken) {
+    public LoginReqDTO tokenToUser(String accessToken) {
 
-        if (validationAccessToken(accesstoken)) {//토큰이 Bearer로 시작하는지 형식이 맞는지 확인
-
+        if (validationAccessToken(accessToken)) {//토큰이 Bearer로 시작하는지 형식이 맞는지 확인
             Claims claims = null;
-            accesstoken = extractToken(accesstoken); // header에서 토큰 추출 (Bearer뗌)
-            claims = tokenToClaims(accesstoken);//
+            accessToken = extractToken(accessToken); // header에서 토큰 추출 (Bearer뗌)
+            claims = tokenToClaims(accessToken);//
             return new LoginReqDTO(claims);
         }
         return null;
 
     }
 
-    public Claims tokenToClaims(String accesstoken) {
+    public Claims tokenToClaims(String accessToken) {
         //토큰을 받아와서 Claims 로 바꿔주는 녀석
         //jwt필터에서 시큐리티 필터로 넘어가기전에 토큰을 시큐리티 필터가 알수 있게 바꿔준다고 생각하면됨.
         return Jwts.parser()
                 .setSigningKey(jwtProperties.getSecretKey())
-                .parseClaimsJws(accesstoken)
+                .parseClaimsJws(accessToken)
                 .getBody();
 
     }
 
-    private boolean validationAccessToken(String accesstoken) { //토큰값이 유효한지 체크
+    private boolean validationAccessToken(String accessToken) { //토큰값이 유효한지 체크
 
-        if (accesstoken == null || !(accesstoken.startsWith(jwtProperties.getTokenPrefix()))) {
+        if (accessToken == null || !(accessToken.startsWith(jwtProperties.getTokenPrefix()))) {
             return false;
         }
         return true;
