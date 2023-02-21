@@ -45,14 +45,14 @@ public class JwtProvider {
 
     public LoginReqDTO tokenToUser(String accessToken) {
 
-        if (validationAccessToken(accessToken)) {//토큰이 Bearer로 시작하는지 형식이 맞는지 확인
+        try {
+            accessToken = extractToken(accessToken);
             Claims claims = null;
-            accessToken = extractToken(accessToken); // header에서 토큰 추출 (Bearer뗌)
             claims = tokenToClaims(accessToken);//
             return new LoginReqDTO(claims);
+        } catch (Exception e) {
+            return null;
         }
-        return null;
-
     }
 
     public Claims tokenToClaims(String accessToken) {
