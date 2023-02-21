@@ -44,10 +44,14 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 //  swagger dependencies
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
-
-    //querydsl 추가
+//  JSONObject dependencies
+    implementation group: 'org.json', name: 'json', version: '20160810'
+//  redis dependencies
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//  querydsl dependencies
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+
 }
 
 tasks.named('test') {

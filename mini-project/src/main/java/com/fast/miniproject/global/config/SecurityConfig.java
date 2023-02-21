@@ -2,6 +2,7 @@ package com.fast.miniproject.global.config;
 
 import com.fast.miniproject.auth.jwt.JwtExceptionFilter;
 import com.fast.miniproject.auth.jwt.JwtFilter;
+import com.fast.miniproject.auth.jwt.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,7 +25,8 @@ public class SecurityConfig {
 
 
     private final JwtFilter jwtFilter;
-    private final JwtExceptionFilter jwtExceptionFilter;
+    private final JwtProperties jwtProperties;
+
 
 
     private static final String[] PUBLIC_URLS = { //이 URL은 권한 검사안함
@@ -67,8 +69,8 @@ public class SecurityConfig {
                         // 물론 퍼블릭 url은 jwt 필터만 통과하면 시큐리티필터는 예외 처리 된다.
                         jwtFilter, // 요청을 할때마다 한번 거쳐가는 필터.
                         UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtExceptionFilter, JwtFilter.class).build();
-
+                .addFilterBefore(JwtExceptionFilter.of(jwtProperties),UsernamePasswordAuthenticationFilter.class)
+                .build();
 
         //인증을 처리하는 기본필터 UsernamePasswordAuthenticationFilter 대신 별도의 인증 로직을 가진 필터를 생성하고 사용하고 싶을 때 아래와 같이 필터를 등록하고 사용
     }

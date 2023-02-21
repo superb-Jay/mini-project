@@ -1,9 +1,15 @@
 package com.fast.miniproject.auth.jwt;
 
-import com.fast.miniproject.global.response.JwtExceptionResponse;
-import io.jsonwebtoken.JwtException;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import com.fast.miniproject.global.response.ErrorCode;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -12,23 +18,61 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+
+@Getter
 public class JwtExceptionFilter extends OncePerRequestFilter {
+
+    private final JwtProperties jwtProperties;
+
+    @Builder
+    private JwtExceptionFilter(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
+
+    public static JwtExceptionFilter of(JwtProperties jwtProperties) {
+        return JwtExceptionFilter.builder()
+                .jwtProperties(jwtProperties)
+                .build();
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+
         try {
+            verificationAccessToken(accessToken);
             filterChain.doFilter(request, response);
-        } catch (JwtException e) {
-            setErrorResponse(HttpStatus.UNAUTHORIZED, response, e);
+
+        } catch (ExpiredJwtException e) {
+            //토큰의 유효기간 만료
+            setErrorResponse(response, ErrorCode.EXPIRED_TOKEN);
+        } catch (MalformedJwtException | SignatureException e) {
+            //유효하지 않은 토큰
+            setErrorResponse(response, ErrorCode.INVALID_TOKEN);
+        } catch (NullPointerException | IllegalArgumentException e) {
+            // 토큰이 없습니다.
+            setErrorResponse(response, ErrorCode.UNKNOWN_ERROR);
         }
     }
 
-    public void setErrorResponse(HttpStatus status, HttpServletResponse response, Throwable e) throws IOException {
-        response.setStatus(status.value());
-        response.setContentType("application/json; charset=UTF-8");
+    private void verificationAccessToken(String accessToken) throws MalformedJwtException, ExpiredJwtException, IllegalArgumentException, NullPointerException {
+        accessToken = accessToken.substring(jwtProperties.getTokenPrefix().length());
+        Jwts.parser()
+                .setSigningKey(jwtProperties.getSecretKey())
+                .parseClaimsJws(accessToken)
+                .getBody();
+    }
 
-        JwtExceptionResponse jwtExceptionResponse = new JwtExceptionResponse(e.getMessage(), HttpStatus.UNAUTHORIZED);
-        response.getWriter().write(jwtExceptionResponse.convertToJson());
+
+    public void setErrorResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {
+
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("code",errorCode.getCode());
+        responseJson.put("message", errorCode.getMessage());
+        response.getWriter().print(responseJson);
     }
 }

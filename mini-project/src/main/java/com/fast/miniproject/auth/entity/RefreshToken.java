@@ -6,10 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Id;
 
-@Entity
-@Table(name = "t_refresh_token")
 @Getter
 @Builder
 @NoArgsConstructor
@@ -17,11 +15,6 @@ import javax.persistence.*;
 public class RefreshToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "refresh_token_id", nullable = false)
-    private Long refreshTokenId;
-
-    @Column(name = "refresh_token", nullable = false)
     private String refreshToken;
 
 }
