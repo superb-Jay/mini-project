@@ -3,18 +3,19 @@ package com.fast.miniproject.auth.service.Impl;
 import com.fast.miniproject.auth.dto.*;
 import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.auth.jwt.JwtProvider;
-import com.fast.miniproject.auth.repository.RefreshTokenRepository;
 import com.fast.miniproject.auth.repository.UserRepository;
 import com.fast.miniproject.auth.service.UserService;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
 import com.fast.miniproject.global.response.ResponseDTO;
 import com.fast.miniproject.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +24,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final ProductService productService;
+    private final RedisService redisService;
 
     @Override
     public ResponseDTO<?> signup(SignupReqDTO signupReqDTO) {
@@ -49,7 +50,8 @@ public class UserServiceImpl implements UserService {
             }
             passwordMustBeSame(loginReqDTO.getPassword(), user.getPassword());
             TokenDTO tokenDTO = jwtProvider.makeJwtToken(user);
-            refreshTokenRepository.save(tokenDTO.toEntity());
+            redisService.setDataExpire(tokenDTO.getRefreshToken(),user.getEmail(),30);
+
             return new ResponseDTO<>(tokenDTO);
 
         } catch (NoSuchElementException | IllegalArgumentException e) {
