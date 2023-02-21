@@ -35,6 +35,8 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 //  swagger dependencies
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
+//  JSONObject dependencies
+    implementation group: 'org.json', name: 'json', version: '20160810'
 }
 
 tasks.named('test') {
