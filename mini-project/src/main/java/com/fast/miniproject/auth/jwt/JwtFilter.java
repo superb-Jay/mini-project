@@ -30,8 +30,6 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        try {
-
             String token = request.getHeader(HttpHeaders.AUTHORIZATION);
 
             if (!tokenService.checkLogout(token)) {
@@ -46,15 +44,6 @@ public class JwtFilter extends OncePerRequestFilter {
                             loginReqDTO.getAuthorities()));
                 }
             }
-        } catch (IllegalArgumentException e) {
-            throw new JwtException("유효하지 않은 토큰");
-        } catch (ExpiredJwtException e) {
-            throw new JwtException("토큰 기한 만료");
-        } catch (SignatureException e) {
-            throw new JwtException("사용자 인증 실패");
-        }
-
-
 
         filterChain.doFilter(request, response);
     }
