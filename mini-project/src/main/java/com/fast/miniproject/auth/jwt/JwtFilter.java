@@ -25,23 +25,21 @@ public class JwtFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, IllegalArgumentException {
 
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String accesstoken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (!tokenService.checkLogout(token)) {
-
-            LoginReqDTO loginReqDTO = jwtProvider.tokenToUser(token);
+        LoginReqDTO loginReqDTO = jwtProvider.tokenToUser(accesstoken);
 
 //           분석이 끝난 유저 객체에 있는 정보를 시큐리티컨텍스트 빈객체에 넘겨준다. (정보와, 권한을 넘겨준다.)
-            if (loginReqDTO != null) {
+            if (loginReqDTO != null && !tokenService.checkToken(accesstoken)) {
                 SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                         loginReqDTO,
                         "",
                         loginReqDTO.getAuthorities()));
             }
-        }
 
         filterChain.doFilter(request, response);
+
     }
 }
