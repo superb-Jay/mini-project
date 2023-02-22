@@ -20,7 +20,7 @@
 - AWS EC2
 - Maira DB
 - Swagger, PostMan
-- 
+- Querydsl
 
 
 ## 팀 소개
