@@ -20,6 +20,7 @@
 - AWS EC2
 - Maira DB
 - Swagger, PostMan
+- 
 
 
 ## 팀 소개
