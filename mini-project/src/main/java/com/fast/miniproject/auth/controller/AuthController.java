@@ -2,7 +2,6 @@ package com.fast.miniproject.auth.controller;
 
 
 import com.fast.miniproject.auth.dto.*;
-import com.fast.miniproject.auth.service.RefreshTokenService;
 import com.fast.miniproject.auth.service.TokenService;
 import com.fast.miniproject.auth.service.UserService;
 import com.fast.miniproject.global.response.ResponseDTO;
@@ -22,7 +21,6 @@ public class AuthController {
 
     private final UserService userService;
     private final TokenService tokenService;
-    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/register")
     @ApiOperation(value = "회원가입 (토큰 X)", notes = "정보를 입력받아 회원가입을 진행하고 DB에 저장하는")
@@ -67,7 +65,7 @@ public class AuthController {
     @PostMapping("/refresh")
     @ApiOperation(value = "토큰 리프레시", notes = "리프레시 토큰을 보내주면 확인하고 엑세스토큰을 새로 발급")
     public ResponseDTO<?> validateRefreshToken(@RequestBody RefreshTokenReqDTO refreshTokenReqDTO){
-        return refreshTokenService.validateRefreshToken(refreshTokenReqDTO.getRefreshToken());
+        return tokenService.validateRefreshToken(refreshTokenReqDTO.getRefreshToken());
 
     }
 

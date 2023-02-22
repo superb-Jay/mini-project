@@ -1,4 +1,4 @@
-package com.fast.miniproject.auth.service.Impl;
+package com.fast.miniproject.global.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
