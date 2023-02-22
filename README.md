@@ -14,11 +14,11 @@
 - Spring Boot
 - JAVA 11
 - Spring Data JPA
-- Spring Security
+- Spring Security, JWT
 - Lombok
 - Gradle
 - AWS EC2
-- Maira DB
+- Maira DB , Redis
 - Swagger, PostMan
 - Querydsl
 
