@@ -5,17 +5,16 @@ import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.auth.jwt.JwtProvider;
 import com.fast.miniproject.auth.repository.UserRepository;
 import com.fast.miniproject.auth.service.UserService;
+import com.fast.miniproject.auth.repository.RedisTemplateRepository;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
 import com.fast.miniproject.global.response.ResponseDTO;
 import com.fast.miniproject.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final ProductService productService;
-    private final RedisService redisService;
+    private final RedisTemplateRepository redisTemplateRepository;
 
     @Override
     public ResponseDTO<?> signup(SignupReqDTO signupReqDTO) {
@@ -50,7 +49,7 @@ public class UserServiceImpl implements UserService {
             }
             passwordMustBeSame(loginReqDTO.getPassword(), user.getPassword());
             TokenDTO tokenDTO = jwtProvider.makeJwtToken(user);
-            redisService.setDataExpire(tokenDTO.getRefreshToken(),user.getEmail(),30);
+            redisTemplateRepository.setDataExpire(tokenDTO.getRefreshToken(),user.getEmail(), jwtProvider.getExpiration(tokenDTO.getRefreshToken()));
 
             return new ResponseDTO<>(tokenDTO);
 

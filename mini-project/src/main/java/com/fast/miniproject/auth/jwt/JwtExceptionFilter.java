@@ -7,7 +7,6 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,15 +21,18 @@ import java.io.IOException;
 @Getter
 public class JwtExceptionFilter extends OncePerRequestFilter {
 
+    private final JwtProvider jwtProvider;
     private final JwtProperties jwtProperties;
 
     @Builder
-    private JwtExceptionFilter(JwtProperties jwtProperties) {
+    private JwtExceptionFilter(JwtProvider jwtProvider,JwtProperties jwtProperties) {
+        this.jwtProvider = jwtProvider;
         this.jwtProperties = jwtProperties;
     }
 
-    public static JwtExceptionFilter of(JwtProperties jwtProperties) {
+    public static JwtExceptionFilter of(JwtProvider jwtProvider,JwtProperties jwtProperties) {
         return JwtExceptionFilter.builder()
+                .jwtProvider(jwtProvider)
                 .jwtProperties(jwtProperties)
                 .build();
     }
@@ -57,7 +59,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     }
 
     private void verificationAccessToken(String accessToken) throws MalformedJwtException, ExpiredJwtException, IllegalArgumentException, NullPointerException {
-        accessToken = accessToken.substring(jwtProperties.getTokenPrefix().length());
+        accessToken = jwtProvider.extractToken(accessToken);
         Jwts.parser()
                 .setSigningKey(jwtProperties.getSecretKey())
                 .parseClaimsJws(accessToken)

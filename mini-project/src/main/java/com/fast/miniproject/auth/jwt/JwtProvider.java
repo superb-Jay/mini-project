@@ -64,7 +64,7 @@ public class JwtProvider {
 
     }
 
-    private String extractToken(String authorizationHeader) { //토큰 (Bearer) 떼고 토큰값만 가져오는 메서드
+    public String extractToken(String authorizationHeader) { //토큰 (Bearer) 떼고 토큰값만 가져오는 메서드
         return authorizationHeader.substring(jwtProperties.getTokenPrefix().length());
     }
 
