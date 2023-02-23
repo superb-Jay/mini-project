@@ -30,7 +30,7 @@
 - [이규석](https://github.com/cutegyuseok)
   - 로그인, 상품상세정보, 구매관련, 서버 배포, 서버 관리 
 - [장재학](https://github.com/superb-Jay)
-  - 로그인, 회원가입
+  - 로그인, 회원가입, JWT, Spring security
 - [주우민](https://github.com/zoomin3022)
   - 상품검색, 페이징
 - [김태윤](https://github.com/lala9663)
