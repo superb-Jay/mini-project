@@ -1,6 +1,6 @@
 package com.fast.miniproject.product.service.impl;
 
-import com.fast.miniproject.auth.dto.LoginReqDTO;
+import com.fast.miniproject.auth.dto.UserDto;
 import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.auth.repository.UserRepository;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
@@ -8,7 +8,6 @@ import com.fast.miniproject.global.response.ResponseDTO;
 import com.fast.miniproject.product.dto.WishlistAddRequestDTO;
 import com.fast.miniproject.product.dto.WishlistDeleteRequestDTO;
 import com.fast.miniproject.product.dto.WishlistResponseDTO;
-import com.fast.miniproject.product.entity.Basket;
 import com.fast.miniproject.product.entity.Product;
 import com.fast.miniproject.product.entity.Wishlist;
 import com.fast.miniproject.product.repository.BasketRepository;
@@ -33,7 +32,7 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> listWishlistDTO(LoginReqDTO loginReqDTO) {
+    public ResponseDTO<?> listWishlistDTO(UserDto.LoginReqDTO loginReqDTO) {
         User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
         List<Wishlist> wishlistList = wishlistRepository.findAllByUser(user);
 
@@ -44,7 +43,7 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> deleteWishlist(LoginReqDTO loginReqDTO, WishlistDeleteRequestDTO requestDTO) {
+    public ResponseDTO<?> deleteWishlist(UserDto.LoginReqDTO loginReqDTO, WishlistDeleteRequestDTO requestDTO) {
         try {
             User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
             if (wishlistRepository.existsByWishlistIdAndUser(requestDTO.getWishlistId(), user)) {
@@ -59,7 +58,7 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> addWishlist(LoginReqDTO loginReqDTO, WishlistAddRequestDTO requestDTO) {
+    public ResponseDTO<?> addWishlist(UserDto.LoginReqDTO loginReqDTO, WishlistAddRequestDTO requestDTO) {
         Product product = productRepository.findByProductId(requestDTO.getProductId()).get();
         User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
 

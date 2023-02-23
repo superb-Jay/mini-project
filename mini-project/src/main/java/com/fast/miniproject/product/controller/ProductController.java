@@ -1,6 +1,6 @@
 package com.fast.miniproject.product.controller;
 
-import com.fast.miniproject.auth.dto.LoginReqDTO;
+import com.fast.miniproject.auth.dto.UserDto;
 import com.fast.miniproject.global.response.ResponseDTO;
 import com.fast.miniproject.product.dto.DeleteOrdersIdReqDTO;
 import com.fast.miniproject.product.dto.ProductIdList;
@@ -44,7 +44,7 @@ public class ProductController {
 
     @ApiOperation(value = "상품 추천 리스트 반환", notes = "사용자가 가입 가능한 상품 리스트를 반환하는 API")
     @GetMapping("/api/products/recommends")
-    public ResponseDTO<?> recommendProduct(@ApiIgnore @AuthenticationPrincipal LoginReqDTO loginReqDTO, @RequestParam(required = false, defaultValue = "1") String page) {
+    public ResponseDTO<?> recommendProduct(@ApiIgnore @AuthenticationPrincipal UserDto.LoginReqDTO loginReqDTO, @RequestParam(required = false, defaultValue = "1") String page) {
         PageRequest pageRequest = null;
         try {
             int intPage = Integer.parseInt(page);
@@ -58,20 +58,20 @@ public class ProductController {
     @PostMapping("/api/orders")
     @ApiOperation(value = "상품(들) 구매", notes = "상품(들)을 구매하는 API")
 
-    public ResponseDTO<?> buyProducts(@ApiIgnore @AuthenticationPrincipal LoginReqDTO user, @RequestBody ProductIdList products_id_list) {
+    public ResponseDTO<?> buyProducts(@ApiIgnore @AuthenticationPrincipal UserDto.LoginReqDTO user, @RequestBody ProductIdList products_id_list) {
         return productService.buyProduct(products_id_list.getProducts_id_list(), user);
     }
 
     @GetMapping("/api/orders")
     @ApiOperation(value = "구매 기록 반환", notes = "상품을 구매한 기록을 반환하는 API")
-    public ResponseDTO<?> orderCheck(@ApiIgnore @AuthenticationPrincipal LoginReqDTO dto) {
+    public ResponseDTO<?> orderCheck(@ApiIgnore @AuthenticationPrincipal UserDto.LoginReqDTO dto) {
         return productService.orderCheck(dto);
     }
 
     @DeleteMapping("/api/orders")
     @ApiOperation(value = "주문 취소", notes = "주문을 취소하는 API")
 
-    public ResponseDTO<?> deleteBuy(@ApiIgnore @AuthenticationPrincipal LoginReqDTO dto, @RequestBody DeleteOrdersIdReqDTO reqDTO){
+    public ResponseDTO<?> deleteBuy(@ApiIgnore @AuthenticationPrincipal UserDto.LoginReqDTO dto, @RequestBody DeleteOrdersIdReqDTO reqDTO){
         return productService.deleteOrder(dto,reqDTO.getOrderId());
     }
 }

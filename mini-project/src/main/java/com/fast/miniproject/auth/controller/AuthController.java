@@ -1,7 +1,8 @@
 package com.fast.miniproject.auth.controller;
 
 
-import com.fast.miniproject.auth.dto.*;
+import com.fast.miniproject.auth.dto.TokenDTO;
+import com.fast.miniproject.auth.dto.UserDto;
 import com.fast.miniproject.auth.service.TokenService;
 import com.fast.miniproject.auth.service.UserService;
 import com.fast.miniproject.global.response.ResponseDTO;
@@ -25,46 +26,46 @@ public class AuthController {
     @PostMapping("/register")
     @ApiOperation(value = "회원가입 (토큰 X)", notes = "정보를 입력받아 회원가입을 진행하고 DB에 저장하는")
 
-    public ResponseDTO<?> signUp(@RequestBody SignupReqDTO signupReqDTO) {
+    public ResponseDTO<?> signUp(@RequestBody UserDto.SignupReqDTO signupReqDTO) {
         return userService.signup(signupReqDTO);
     }
 
     @PostMapping("/login")
     @ApiOperation(value = "로그인 (토큰 X)", notes = "이메일과 패스워드를 입력받아 로그인이 가능 성공하면 토큰발급")
-    public ResponseDTO<?> signIn(@RequestBody LoginReqDTO loginReqDTO) {
+    public ResponseDTO<?> signIn(@RequestBody UserDto.LoginReqDTO loginReqDTO) {
         return userService.login(loginReqDTO);
     }
 
     @PostMapping("/logout")
     @ApiOperation(value = "로그아웃 (토큰 O)", notes = "버튼을 누르면 현재 로그인 토큰을 로그아웃 테이블에 저장한다. " +
                                             "다음 요청시에 현재 토큰과 요청이 오면 토큰 유효성 검사에 걸려서 로그인을 다시 요청하게 된다.")
-    public ResponseDTO<?> logout(@ApiIgnore @RequestHeader(name="Authorization") String header,@RequestBody RefreshTokenReqDTO refreshTokenReqDTO) {
+    public ResponseDTO<?> logout(@ApiIgnore @RequestHeader(name="Authorization") String header,@RequestBody TokenDTO.RefreshTokenReqDTO refreshTokenReqDTO) {
         return tokenService.logout(header,refreshTokenReqDTO);
     }
 
     @GetMapping("/api/user")
     @ApiOperation(value = "회원정보 수정페이지 (토큰 O)", notes = "회원정보 수정페이지로 이동한다. " +
                         "현재 로그인회원의 정보를 반환한다.")
-    public ResponseDTO<?> editUser(@AuthenticationPrincipal LoginReqDTO loginReqDTO) {
+    public ResponseDTO<?> editUser(@AuthenticationPrincipal UserDto.LoginReqDTO loginReqDTO) {
         return userService.editUser(loginReqDTO);
     }
 
     @PatchMapping("/api/user")
     @ApiOperation(value = "회원정보 수정버튼 (토큰 O)", notes = "기존 비밀번호가 맞다면 DB에 저장한다.")
-    public ResponseDTO<?> updateUser(@AuthenticationPrincipal LoginReqDTO loginReqDTO, @RequestBody PatchUserReqDTO patchUserReqDTO) {
+    public ResponseDTO<?> updateUser(@AuthenticationPrincipal UserDto.LoginReqDTO loginReqDTO, @RequestBody UserDto.PatchUserReqDTO patchUserReqDTO) {
         return userService.updateUser(loginReqDTO,patchUserReqDTO);
     }
 
     @DeleteMapping("/api/user")
     @ApiOperation(value = "회원탈퇴 버튼 (토큰 O)", notes = "기존 비밀번호가 맞다면 DB에 deleteCheck에 withdraw를 기록하고 " +
             "로그인시 deleteCheck 값이 null이 아니면 탈퇴한 회원이라는 메세지를 안내")
-    public ResponseDTO<?> deleteUser(@AuthenticationPrincipal LoginReqDTO loginReqDTO, @RequestBody DeleteUserReqDTO deleteUserReqDTO) {
+    public ResponseDTO<?> deleteUser(@AuthenticationPrincipal UserDto.LoginReqDTO loginReqDTO, @RequestBody UserDto.DeleteUserReqDTO deleteUserReqDTO) {
         return userService.deleteUser(loginReqDTO,deleteUserReqDTO);
     }
 
     @PostMapping("/refresh")
     @ApiOperation(value = "토큰 리프레시", notes = "리프레시 토큰을 보내주면 확인하고 엑세스토큰을 새로 발급")
-    public ResponseDTO<?> validateRefreshToken(@RequestBody RefreshTokenReqDTO refreshTokenReqDTO){
+    public ResponseDTO<?> validateRefreshToken(@RequestBody TokenDTO.RefreshTokenReqDTO refreshTokenReqDTO){
         return tokenService.validateRefreshToken(refreshTokenReqDTO.getRefreshToken());
 
     }

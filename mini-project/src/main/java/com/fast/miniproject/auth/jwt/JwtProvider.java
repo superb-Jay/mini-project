@@ -1,9 +1,12 @@
 package com.fast.miniproject.auth.jwt;
 
-import com.fast.miniproject.auth.dto.LoginReqDTO;
 import com.fast.miniproject.auth.dto.TokenDTO;
+import com.fast.miniproject.auth.dto.UserDto;
 import com.fast.miniproject.auth.entity.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -42,13 +45,13 @@ public class JwtProvider {
     }
 
 
-    public LoginReqDTO tokenToUser(String accessToken) {
+    public UserDto.LoginReqDTO tokenToUser(String accessToken) {
 
         try {
             accessToken = extractToken(accessToken);
             Claims claims = null;
             claims = tokenToClaims(accessToken);
-            return new LoginReqDTO(claims);
+            return new UserDto.LoginReqDTO(claims);
         } catch (Exception e) {
             return null;
         }
