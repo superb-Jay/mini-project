@@ -28,7 +28,7 @@
 - [김재성✨](https://github.com/kimjaeseong1)
   - 상품리스트, 구매가능리스트
 - [이규석](https://github.com/cutegyuseok)
-  - 로그인, 상품상세정보, 구매관련
+  - 로그인, 상품상세정보, 구매관련, 서버 배포, 서버 관리 
 - [장재학](https://github.com/superb-Jay)
   - 로그인, 회원가입
 - [주우민](https://github.com/zoomin3022)
