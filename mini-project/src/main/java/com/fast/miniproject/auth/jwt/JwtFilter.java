@@ -1,6 +1,6 @@
 package com.fast.miniproject.auth.jwt;
 
-import com.fast.miniproject.auth.dto.UserDto;
+import com.fast.miniproject.auth.dto.UserDTO;
 import com.fast.miniproject.auth.service.TokenService;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String accesstoken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        UserDto.LoginReqDTO loginReqDTO = jwtProvider.tokenToUser(accesstoken);
+        UserDTO.LoginReqDTO loginReqDTO = jwtProvider.tokenToUser(accesstoken);
 
 //           분석이 끝난 유저 객체에 있는 정보를 시큐리티컨텍스트 빈객체에 넘겨준다. (정보와, 권한을 넘겨준다.)
             if (loginReqDTO != null && !tokenService.checkToken(accesstoken)) {

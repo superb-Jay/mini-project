@@ -1,7 +1,7 @@
 package com.fast.miniproject.auth.jwt;
 
 import com.fast.miniproject.auth.dto.TokenDTO;
-import com.fast.miniproject.auth.dto.UserDto;
+import com.fast.miniproject.auth.dto.UserDTO;
 import com.fast.miniproject.auth.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
@@ -45,13 +45,13 @@ public class JwtProvider {
     }
 
 
-    public UserDto.LoginReqDTO tokenToUser(String accessToken) {
+    public UserDTO.LoginReqDTO tokenToUser(String accessToken) {
 
         try {
             accessToken = extractToken(accessToken);
             Claims claims = null;
             claims = tokenToClaims(accessToken);
-            return new UserDto.LoginReqDTO(claims);
+            return new UserDTO.LoginReqDTO(claims);
         } catch (Exception e) {
             return null;
         }

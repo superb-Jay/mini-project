@@ -1,6 +1,6 @@
 package com.fast.miniproject.product.service;
 
-import com.fast.miniproject.auth.dto.UserDto;
+import com.fast.miniproject.auth.dto.UserDTO;
 import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.global.response.ResponseDTO;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +16,11 @@ public interface ProductService {
 
     ResponseDTO<?> recommendProduct(String email, Pageable pageable);
 
-    ResponseDTO<?> buyProduct(ArrayList<Integer> products_id_list, UserDto.LoginReqDTO user);
+    ResponseDTO<?> buyProduct(ArrayList<Integer> products_id_list, UserDTO.LoginReqDTO user);
 
-    ResponseDTO<?> orderCheck(UserDto.LoginReqDTO dto);
+    ResponseDTO<?> orderCheck(UserDTO.LoginReqDTO dto);
 
-    ResponseDTO<?> deleteOrder(UserDto.LoginReqDTO dto, Long orderId);
+    ResponseDTO<?> deleteOrder(UserDTO.LoginReqDTO dto, Long orderId);
 
     Long availableAmount(User user);
 }
