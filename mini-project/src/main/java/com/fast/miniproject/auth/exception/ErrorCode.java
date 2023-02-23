@@ -1,4 +1,4 @@
-package com.fast.miniproject.global.response;
+package com.fast.miniproject.auth.exception;
 
 
 import lombok.AllArgsConstructor;

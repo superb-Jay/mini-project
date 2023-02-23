@@ -1,6 +1,6 @@
 package com.fast.miniproject.auth.jwt;
 
-import com.fast.miniproject.global.response.ErrorCode;
+import com.fast.miniproject.auth.exception.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;

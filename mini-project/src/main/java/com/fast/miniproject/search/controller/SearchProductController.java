@@ -1,6 +1,6 @@
 package com.fast.miniproject.search.controller;
 
-import com.fast.miniproject.auth.dto.LoginReqDTO;
+import com.fast.miniproject.auth.dto.UserDTO;
 import com.fast.miniproject.global.response.PageResponseDTO;
 import com.fast.miniproject.global.response.ResponseDTO;
 import com.fast.miniproject.search.service.SearchProductService;
@@ -47,7 +47,7 @@ public class SearchProductController {
             @RequestParam(required = false, defaultValue = "ASC") String sortDirection,
             @RequestParam(required = false, defaultValue = "1") String page,
             @RequestParam(required = false, defaultValue = "false") Boolean isChecked,
-            @AuthenticationPrincipal LoginReqDTO loginReqDTO
+            @AuthenticationPrincipal UserDTO.LoginReqDTO loginReqDTO
     ) {
         PageRequest pageRequest = null;
 
