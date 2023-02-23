@@ -1,11 +1,12 @@
 package com.fast.miniproject.auth.service.Impl;
 
-import com.fast.miniproject.auth.dto.*;
+import com.fast.miniproject.auth.dto.TokenDTO;
+import com.fast.miniproject.auth.dto.UserDTO;
 import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.auth.jwt.JwtProvider;
+import com.fast.miniproject.auth.repository.RedisTemplateRepository;
 import com.fast.miniproject.auth.repository.UserRepository;
 import com.fast.miniproject.auth.service.UserService;
-import com.fast.miniproject.auth.repository.RedisTemplateRepository;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
 import com.fast.miniproject.global.response.ResponseDTO;
 import com.fast.miniproject.product.service.ProductService;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
     private final RedisTemplateRepository redisTemplateRepository;
 
     @Override
-    public ResponseDTO<?> signup(SignupReqDTO signupReqDTO) {
+    public ResponseDTO<?> signup(UserDTO.SignupReqDTO signupReqDTO) {
 
         if (userRepository.findByEmail(signupReqDTO.getEmail()).isEmpty()) {
             String encodingPassword = encodingPassword(signupReqDTO.getPassword());
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseDTO<?> login(LoginReqDTO loginReqDTO) {
+    public ResponseDTO<?> login(UserDTO.LoginReqDTO loginReqDTO) {
         try {
             User user = userRepository.findByEmail(loginReqDTO.getEmail())
                     .orElseThrow(IllegalArgumentException::new);
@@ -59,12 +60,12 @@ public class UserServiceImpl implements UserService {
 
     }
     @Override
-    public ResponseDTO<?> editUser(LoginReqDTO loginReqDTO) {
+    public ResponseDTO<?> editUser(UserDTO.LoginReqDTO loginReqDTO) {
         try {
             if(loginReqDTO != null) {
                 User user = userRepository.findByEmail(loginReqDTO.getEmail())
                         .orElseThrow(IllegalArgumentException::new);
-                return new ResponseDTO<>(new PatchUserResDTO(user,productService.availableAmount(user)));
+                return new ResponseDTO<>(new UserDTO.PatchUserResDTO(user,productService.availableAmount(user)));
             }else{
                 throw new IllegalArgumentException();
             }
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> updateUser(LoginReqDTO loginReqDTO, PatchUserReqDTO patchUserReqDTO) {
+    public ResponseDTO<?> updateUser(UserDTO.LoginReqDTO loginReqDTO, UserDTO.PatchUserReqDTO patchUserReqDTO) {
         try {
             User user = userRepository.findByEmail(loginReqDTO.getEmail())
                     .orElseThrow(IllegalArgumentException::new);
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> deleteUser(LoginReqDTO loginReqDTO, DeleteUserReqDTO deleteUserReqDTO) {
+    public ResponseDTO<?> deleteUser(UserDTO.LoginReqDTO loginReqDTO, UserDTO.DeleteUserReqDTO deleteUserReqDTO) {
         try {
             User user = userRepository.findByEmail(loginReqDTO.getEmail())
                     .orElseThrow(IllegalArgumentException::new);

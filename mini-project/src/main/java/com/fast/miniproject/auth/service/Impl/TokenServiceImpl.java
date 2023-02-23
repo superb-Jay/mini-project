@@ -1,6 +1,5 @@
 package com.fast.miniproject.auth.service.Impl;
 
-import com.fast.miniproject.auth.dto.RefreshTokenReqDTO;
 import com.fast.miniproject.auth.dto.TokenDTO;
 import com.fast.miniproject.auth.jwt.JwtProvider;
 import com.fast.miniproject.auth.repository.RedisTemplateRepository;
@@ -18,7 +17,7 @@ public class TokenServiceImpl implements TokenService {
     private final RedisTemplateRepository redisTemplateRepository;
 
     @Override
-    public ResponseDTO<?> logout(String header, RefreshTokenReqDTO refreshTokenReqDTO){
+    public ResponseDTO<?> logout(String header, TokenDTO.RefreshTokenReqDTO refreshTokenReqDTO){
 
         if (checkToken(header)){
             return new ErrorResponseDTO(500,"이미 만료된 토큰입니다.").toResponse();

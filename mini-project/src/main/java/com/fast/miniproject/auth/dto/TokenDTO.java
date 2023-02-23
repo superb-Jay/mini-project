@@ -1,9 +1,8 @@
 package com.fast.miniproject.auth.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
 
 @Getter
@@ -14,6 +13,22 @@ public class TokenDTO {
 
     private final String accessToken;
     private final String refreshToken;
+
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString
+    @ApiModel(value = "리프레시 토큰 입력")
+    public static class RefreshTokenReqDTO {
+
+        @ApiModelProperty(value = "리프레시 토큰")
+        private String refreshToken;
+
+
+    }
+
 
 
 }

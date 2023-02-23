@@ -1,7 +1,7 @@
 package com.fast.miniproject.product.service.impl;
 
 
-import com.fast.miniproject.auth.dto.LoginReqDTO;
+import com.fast.miniproject.auth.dto.UserDTO;
 import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.auth.repository.UserRepository;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
@@ -31,7 +31,7 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> listBasketDTO(LoginReqDTO loginReqDTO) {
+    public ResponseDTO<?> listBasketDTO(UserDTO.LoginReqDTO loginReqDTO) {
         User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
         List<Basket> basketList = basketRepository.findAllByUser(user);
 
@@ -42,7 +42,7 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> deleteBasket(LoginReqDTO loginReqDTO, BasketDeleteRequestDTO requestDTO) {
+    public ResponseDTO<?> deleteBasket(UserDTO.LoginReqDTO loginReqDTO, BasketDeleteRequestDTO requestDTO) {
         try {
             User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
             if (basketRepository.existsByBasketIdAndUser(requestDTO.getBasketId(), user)) {
@@ -57,7 +57,7 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> addBasket(LoginReqDTO loginReqDTO, BasketAddRequestDTO requestDTO) {
+    public ResponseDTO<?> addBasket(UserDTO.LoginReqDTO loginReqDTO, BasketAddRequestDTO requestDTO) {
 
         Product product = productRepository.findByProductId(requestDTO.getProductId()).get();
 

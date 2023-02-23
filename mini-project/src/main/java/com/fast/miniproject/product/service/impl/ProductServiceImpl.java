@@ -1,6 +1,6 @@
 package com.fast.miniproject.product.service.impl;
 
-import com.fast.miniproject.auth.dto.LoginReqDTO;
+import com.fast.miniproject.auth.dto.UserDTO;
 import com.fast.miniproject.auth.entity.User;
 import com.fast.miniproject.auth.repository.UserRepository;
 import com.fast.miniproject.global.response.ErrorResponseDTO;
@@ -82,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ResponseDTO<?> buyProduct(ArrayList<Integer> products_id_list, LoginReqDTO dto) {
+    public ResponseDTO<?> buyProduct(ArrayList<Integer> products_id_list, UserDTO.LoginReqDTO dto) {
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(IllegalArgumentException::new);
         List<Product> productList = productRepository.findAllByProductId(products_id_list);
         if (productList.size() != products_id_list.size())
@@ -101,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseDTO<?> orderCheck(LoginReqDTO dto) {
+    public ResponseDTO<?> orderCheck(UserDTO.LoginReqDTO dto) {
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(IllegalArgumentException::new);
         try {
             List<Orders> orderList = orderRepository.findAllByUserOrderByPurchaseDate(user);
@@ -114,7 +114,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseDTO<?> deleteOrder(LoginReqDTO dto, Long orderId) {
+    public ResponseDTO<?> deleteOrder(UserDTO.LoginReqDTO dto, Long orderId) {
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(IllegalArgumentException::new);
         try {
             Orders orders = orderRepository.findByOrderIdAndUser(orderId, user).orElseThrow(IllegalArgumentException::new);
