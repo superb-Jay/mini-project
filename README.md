@@ -4,6 +4,9 @@
 <br>
 ## 프로젝트 설명
 <br>
+
+"금융 상품 추천 서비스 페이지 제작”
+
 <br>
 ## 구현 기능
 <br>
@@ -28,9 +31,9 @@
 - [김재성✨](https://github.com/kimjaeseong1)
   - 상품리스트, 구매가능리스트
 - [이규석](https://github.com/cutegyuseok)
-  - 로그인, 상품상세정보, 구매관련, 서버 배포, 서버 관리 
+  - 상품상세, 구매, 서버 배포 및 버전 관리
 - [장재학](https://github.com/superb-Jay)
-  - 로그인, 회원가입, JWT, Spring security
+  - 회원, JWT, Spring security
 - [주우민](https://github.com/zoomin3022)
   - 상품검색, 페이징
 - [김태윤](https://github.com/lala9663)
