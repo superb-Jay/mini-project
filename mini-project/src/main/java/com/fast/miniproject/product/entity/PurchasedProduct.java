@@ -35,7 +35,7 @@ public class PurchasedProduct {
     @Column(name = "purchased_product_rate")
     private double purchasedProductRate;
 
-    @Column(name = "purchased_product_detail")
+    @Column(name = "purchased_product_rp_number")
     private String purchasedProductDetail;
 
     @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
