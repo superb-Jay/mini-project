@@ -33,7 +33,7 @@ public class Product {
     @Column(name = "product_rate")
     private double rate;
 
-    @Column(name = "detail")
+    @Column(name = "product_rp_number")
     private String detail;
 
     @Builder
