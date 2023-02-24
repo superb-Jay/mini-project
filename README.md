@@ -73,3 +73,6 @@
 ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=Slack&logoColor=white)
 ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white)
 ![Discode](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)
+
+### Database Structure Diagram
+[![image](https://user-images.githubusercontent.com/103543611/221112219-60c91007-3774-477a-87ce-31d10dab0753.png)](https://www.erdcloud.com/p/sqE33X5EfhiQHWfX2)
