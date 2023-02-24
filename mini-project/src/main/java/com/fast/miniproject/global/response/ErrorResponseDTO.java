@@ -1,6 +1,9 @@
 package com.fast.miniproject.global.response;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @NoArgsConstructor
@@ -10,7 +13,7 @@ public class ErrorResponseDTO {
     private int errorCode;
     private String message;
 
-    public ResponseDTO toResponse(){
-        return new ResponseDTO<>(this.errorCode,this.message,null);
+    public ResponseDTO toResponse() {
+        return new ResponseDTO<>(this.errorCode, this.message, null);
     }
 }

@@ -26,14 +26,14 @@ public class ProductDTO {
     private String detail;
     private Long productId;
 
-    public ProductDTO(Product product){
+    public ProductDTO(Product product) {
         this.price = product.getPrice();
         this.brand = product.getBrand();
         this.logo = product.getLogo();
         this.name = product.getName();
         this.rate = product.getRate();
         this.detail = product.getDetail();
-        this.productId=product.getProductId();
+        this.productId = product.getProductId();
     }
 
 }

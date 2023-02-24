@@ -1,6 +1,6 @@
 package com.fast.miniproject.auth.exception;
 
-public class UserException extends RuntimeException{
+public class UserException extends RuntimeException {
     private final UserExceptionType userExceptionType;
 
     public UserException(UserExceptionType exceptionType) {

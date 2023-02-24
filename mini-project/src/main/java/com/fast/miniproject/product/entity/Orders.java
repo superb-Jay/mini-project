@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 public class Orders {
 
     @Id
@@ -22,8 +22,8 @@ public class Orders {
     @Column(name = "order_id")
     private Long orderId;
 
-    @ManyToOne(targetEntity= User.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="member")
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "member")
     private User user;
 
     @CreationTimestamp

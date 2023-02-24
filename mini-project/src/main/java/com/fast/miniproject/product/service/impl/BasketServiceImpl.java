@@ -47,7 +47,7 @@ public class BasketServiceImpl implements BasketService {
             User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
             if (basketRepository.existsByBasketIdAndUser(requestDTO.getBasketId(), user)) {
                 basketRepository.deleteByBasketIdAndUser(requestDTO.getBasketId(), user);
-                return new ResponseDTO<>(200,"상품 삭제 성공",null);
+                return new ResponseDTO<>(200, "상품 삭제 성공", null);
             }
         } catch (Exception e) {
             return new ErrorResponseDTO(500, "상품 삭제 실패").toResponse();
@@ -64,9 +64,9 @@ public class BasketServiceImpl implements BasketService {
         User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
 
         try {
-            if (basketRepository.existsByProductAndUser(product,user)) {
+            if (basketRepository.existsByProductAndUser(product, user)) {
                 return new ErrorResponseDTO(500, "이미 존재하는 상품입니다.").toResponse();
-            }  else {
+            } else {
                 basketRepository.save(new Basket(product, user));
             }
         } catch (Exception e) {
@@ -74,5 +74,5 @@ public class BasketServiceImpl implements BasketService {
         }
         return new ResponseDTO<>(200, "상품 추가 성공", null);
 
-        }
+    }
 }

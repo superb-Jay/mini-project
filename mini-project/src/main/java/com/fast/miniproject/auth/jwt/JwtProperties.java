@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 @ToString
 public class JwtProperties {
 
-  @Value("${jwt.issuer}")
-  private String issuer;
-  @Value("${jwt.secretKey}")
-  private String secretKey;
-  @Value("${jwt.tokenPrefix}")
-  private String tokenPrefix;
+    @Value("${jwt.issuer}")
+    private String issuer;
+    @Value("${jwt.secretKey}")
+    private String secretKey;
+    @Value("${jwt.tokenPrefix}")
+    private String tokenPrefix;
 }

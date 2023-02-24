@@ -1,7 +1,10 @@
 package com.fast.miniproject.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -32,14 +35,14 @@ public class PurchasedProduct {
     @Column(name = "purchased_product_rate")
     private double purchasedProductRate;
 
-    @Column(name="purchased_product_detail")
+    @Column(name = "purchased_product_detail")
     private String purchasedProductDetail;
 
-    @ManyToOne(targetEntity=Product.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="product")
+    @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product")
     private Product product;
 
-    @ManyToOne(targetEntity = Orders.class,fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Orders.class, fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "orders")
     private Orders orders;

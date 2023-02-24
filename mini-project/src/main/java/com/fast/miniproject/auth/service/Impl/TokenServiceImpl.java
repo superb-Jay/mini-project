@@ -17,20 +17,20 @@ public class TokenServiceImpl implements TokenService {
     private final RedisTemplateRepository redisTemplateRepository;
 
     @Override
-    public ResponseDTO<?> logout(String header, TokenDTO.RefreshTokenReqDTO refreshTokenReqDTO){
+    public ResponseDTO<?> logout(String header, TokenDTO.RefreshTokenReqDTO refreshTokenReqDTO) {
 
-        if (checkToken(header)){
-            return new ErrorResponseDTO(500,"이미 만료된 토큰입니다.").toResponse();
-        }else {
+        if (checkToken(header)) {
+            return new ErrorResponseDTO(500, "이미 만료된 토큰입니다.").toResponse();
+        } else {
             try {
                 String accessToken = jwtProvider.extractToken(header);
-                redisTemplateRepository.setDataExpire(header,"logout",jwtProvider.getExpiration(accessToken));
+                redisTemplateRepository.setDataExpire(header, "logout", jwtProvider.getExpiration(accessToken));
                 jwtProvider.getExpiration(refreshTokenReqDTO.getRefreshToken());
                 redisTemplateRepository.deleteData(refreshTokenReqDTO.getRefreshToken());
 
-                return new ResponseDTO<>(200,"로그아웃 성공",null);
+                return new ResponseDTO<>(200, "로그아웃 성공", null);
             } catch (Exception e) {
-                return new ErrorResponseDTO(500,"로그아웃 시도중 에러가 발생 했습니다.").toResponse();
+                return new ErrorResponseDTO(500, "로그아웃 시도중 에러가 발생 했습니다.").toResponse();
             }
         }
     }
@@ -40,16 +40,16 @@ public class TokenServiceImpl implements TokenService {
         try {
             String userEmail = redisTemplateRepository.getData(refreshToken);
 
-            if (jwtProvider.getExpiration(refreshToken) > 0 && checkToken(refreshToken) ) {
+            if (jwtProvider.getExpiration(refreshToken) > 0 && checkToken(refreshToken)) {
                 String updateAccessToken = jwtProvider.recreationAccessToken(userEmail);
                 return new ResponseDTO<>(200, "Refresh 토큰을 통한 Access Token 생성이 완료되었습니다",
                         TokenDTO.builder().accessToken(updateAccessToken).refreshToken(refreshToken).build());
-            }else{
+            } else {
                 throw new IllegalArgumentException();
             }
 
-        }catch (Exception e) {
-            return new ResponseDTO<>(403,"Refresh 토큰이 유효하지 않습니다. 로그인이 필요합니다.",null);
+        } catch (Exception e) {
+            return new ResponseDTO<>(403, "Refresh 토큰이 유효하지 않습니다. 로그인이 필요합니다.", null);
         }
     }
 

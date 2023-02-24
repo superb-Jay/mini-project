@@ -132,7 +132,6 @@ public class ProductServiceImpl implements ProductService {
         Integer sum = purchaseProductRepository.searchSumByOrdersList(ordersList);
         int max = (int) (user.getSalary() * 2);
         if (sum != null) {
-            System.out.println(sum);
             max -= sum;
         }
         for (Product product : productList) {
@@ -173,16 +172,16 @@ public class ProductServiceImpl implements ProductService {
         return orderHistoryArrayList;
     }
 
-    public Long availableAmount(User user){
-        long amount = user.getSalary()*2;
+    public Long availableAmount(User user) {
+        long amount = user.getSalary() * 2;
         long sum;
         try {
             List<Orders> ordersList = orderRepository.findAllByUserOrderByPurchaseDate(user);
-             sum = purchaseProductRepository.searchSumByOrdersList(ordersList);
-        }catch (Exception e){
-           sum =0;
+            sum = purchaseProductRepository.searchSumByOrdersList(ordersList);
+        } catch (Exception e) {
+            sum = 0;
         }
-        return amount-sum;
+        return amount - sum;
     }
 
 }

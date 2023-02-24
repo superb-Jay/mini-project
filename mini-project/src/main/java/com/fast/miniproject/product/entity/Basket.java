@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name="basket")
+@Table(name = "basket")
 public class Basket {
 
     @Id
@@ -19,12 +19,12 @@ public class Basket {
     @Column(name = "basket_id")
     private Long basketId;
 
-    @ManyToOne(targetEntity=Product.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="product")
+    @ManyToOne(targetEntity = Product.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product")
     private Product product;
 
-    @ManyToOne(targetEntity= User.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="member")
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "member")
     private User user;
 
     @Builder

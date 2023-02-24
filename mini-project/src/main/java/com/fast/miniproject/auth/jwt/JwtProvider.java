@@ -75,7 +75,7 @@ public class JwtProvider {
         // accessToken 남은 유효시간
         Date expiration =
                 Jwts.parser()
-                .setSigningKey(jwtProperties.getSecretKey())
+                        .setSigningKey(jwtProperties.getSecretKey())
                         .parseClaimsJws(accessToken)
                         .getBody().getExpiration();
         Long now = new Date().getTime();

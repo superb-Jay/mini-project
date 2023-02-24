@@ -32,12 +32,12 @@ public class JwtFilter extends OncePerRequestFilter {
         UserDTO.LoginReqDTO loginReqDTO = jwtProvider.tokenToUser(accesstoken);
 
 //           분석이 끝난 유저 객체에 있는 정보를 시큐리티컨텍스트 빈객체에 넘겨준다. (정보와, 권한을 넘겨준다.)
-            if (loginReqDTO != null && !tokenService.checkToken(accesstoken)) {
-                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
-                        loginReqDTO,
-                        "",
-                        loginReqDTO.getAuthorities()));
-            }
+        if (loginReqDTO != null && !tokenService.checkToken(accesstoken)) {
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                    loginReqDTO,
+                    "",
+                    loginReqDTO.getAuthorities()));
+        }
 
         filterChain.doFilter(request, response);
 

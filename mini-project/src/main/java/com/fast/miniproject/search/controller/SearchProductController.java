@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/search")
-@Slf4j
 @CrossOrigin(origins = "*")
 public class SearchProductController {
 
@@ -58,7 +56,6 @@ public class SearchProductController {
         } catch (IllegalArgumentException e) {
             pageRequest = PageRequest.of(0, PAGE_SIZE);
             //음수나 오버플로 발생시키는 페이지 번호면 0번페이지로
-            log.info(e.getMessage());
         }
         PageResponseDTO pageResponseDTO = null;
         if (isChecked) {

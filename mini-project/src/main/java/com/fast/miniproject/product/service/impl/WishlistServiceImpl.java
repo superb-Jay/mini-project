@@ -63,7 +63,7 @@ public class WishlistServiceImpl implements WishlistService {
         User user = userRepository.findByEmail(loginReqDTO.getEmail()).get();
 
         try {
-            if (wishlistRepository.existsByProductAndUser(product,user)) {
+            if (wishlistRepository.existsByProductAndUser(product, user)) {
                 return new ErrorResponseDTO(500, "이미 찜 한 상품입니다.").toResponse();
             } else {
                 wishlistRepository.save(new Wishlist(product, user));

@@ -71,7 +71,7 @@ public class ProductController {
     @DeleteMapping("/api/orders")
     @ApiOperation(value = "주문 취소", notes = "주문을 취소하는 API")
 
-    public ResponseDTO<?> deleteBuy(@ApiIgnore @AuthenticationPrincipal UserDTO.LoginReqDTO dto, @RequestBody DeleteOrdersIdReqDTO reqDTO){
-        return productService.deleteOrder(dto,reqDTO.getOrderId());
+    public ResponseDTO<?> deleteBuy(@ApiIgnore @AuthenticationPrincipal UserDTO.LoginReqDTO dto, @RequestBody DeleteOrdersIdReqDTO reqDTO) {
+        return productService.deleteOrder(dto, reqDTO.getOrderId());
     }
 }

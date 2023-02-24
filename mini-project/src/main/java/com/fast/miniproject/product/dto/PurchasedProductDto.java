@@ -27,12 +27,12 @@ public class PurchasedProductDto {
 
     private Long originalProductId;
 
-    public PurchasedProductDto(PurchasedProduct purchasedProduct){
-        this.purchasedProductId=purchasedProduct.getPurchasedProductId();
-        this.purchasedProductPrice=purchasedProduct.getPurchasedProductPrice();
-        this.originalProductId=purchasedProduct.getProduct().getProductId();
-        this.purchasedProductBrand=purchasedProduct.getPurchasedProductBrand();
-        this.purchasedProductLogo =purchasedProduct.getPurchasedProductLogo();
+    public PurchasedProductDto(PurchasedProduct purchasedProduct) {
+        this.purchasedProductId = purchasedProduct.getPurchasedProductId();
+        this.purchasedProductPrice = purchasedProduct.getPurchasedProductPrice();
+        this.originalProductId = purchasedProduct.getProduct().getProductId();
+        this.purchasedProductBrand = purchasedProduct.getPurchasedProductBrand();
+        this.purchasedProductLogo = purchasedProduct.getPurchasedProductLogo();
         this.purchasedProductName = purchasedProduct.getPurchasedProductName();
         this.purchasedProductRate = purchasedProduct.getPurchasedProductRate();
         this.purchasedProductDetail = purchasedProduct.getPurchasedProductDetail();

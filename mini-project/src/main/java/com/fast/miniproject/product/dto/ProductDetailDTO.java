@@ -1,7 +1,9 @@
 package com.fast.miniproject.product.dto;
 
 import com.fast.miniproject.product.entity.Product;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -16,13 +18,13 @@ public class ProductDetailDTO {
     private double rate;
     private String detail;
 
-    public ProductDetailDTO(Product product){
-        this.productId=product.getProductId();
-        this.price=product.getPrice();
-        this.brand=product.getBrand();
-        this.logo=product.getLogo();
-        this.name=product.getName();
-        this.rate=product.getRate();
-        this.detail=product.getDetail();
+    public ProductDetailDTO(Product product) {
+        this.productId = product.getProductId();
+        this.price = product.getPrice();
+        this.brand = product.getBrand();
+        this.logo = product.getLogo();
+        this.name = product.getName();
+        this.rate = product.getRate();
+        this.detail = product.getDetail();
     }
 }

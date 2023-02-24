@@ -6,6 +6,8 @@ import com.fast.miniproject.global.response.ResponseDTO;
 public interface TokenService {
 
     ResponseDTO<?> logout(String header, TokenDTO.RefreshTokenReqDTO refreshTokenReqDTO);
+
     ResponseDTO<?> validateRefreshToken(String refreshToken);
+
     boolean checkToken(String token);
 }
