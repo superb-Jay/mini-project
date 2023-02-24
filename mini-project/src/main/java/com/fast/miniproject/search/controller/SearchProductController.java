@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"검색 서비스"}, description = "검색 결과 반환 하는 서비스")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/search")
+@RequestMapping("/api/search")
 @Slf4j
 @CrossOrigin(origins = "*")
 public class SearchProductController {

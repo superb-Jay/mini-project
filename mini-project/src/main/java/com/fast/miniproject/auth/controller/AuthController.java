@@ -23,20 +23,20 @@ public class AuthController {
     private final UserService userService;
     private final TokenService tokenService;
 
-    @PostMapping("/register")
+    @PostMapping("/api/register")
     @ApiOperation(value = "회원가입 (토큰 X)", notes = "정보를 입력받아 회원가입을 진행하고 DB에 저장하는")
 
     public ResponseDTO<?> signUp(@RequestBody UserDTO.SignupReqDTO signupReqDTO) {
         return userService.signup(signupReqDTO);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/api/login")
     @ApiOperation(value = "로그인 (토큰 X)", notes = "이메일과 패스워드를 입력받아 로그인이 가능 성공하면 토큰발급")
     public ResponseDTO<?> signIn(@RequestBody UserDTO.LoginReqDTO loginReqDTO) {
         return userService.login(loginReqDTO);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/api/logout")
     @ApiOperation(value = "로그아웃 (토큰 O)", notes = "버튼을 누르면 현재 로그인 토큰을 로그아웃 테이블에 저장한다. " +
                                             "다음 요청시에 현재 토큰과 요청이 오면 토큰 유효성 검사에 걸려서 로그인을 다시 요청하게 된다.")
     public ResponseDTO<?> logout(@ApiIgnore @RequestHeader(name="Authorization") String header,@RequestBody TokenDTO.RefreshTokenReqDTO refreshTokenReqDTO) {
@@ -63,7 +63,7 @@ public class AuthController {
         return userService.deleteUser(loginReqDTO,deleteUserReqDTO);
     }
 
-    @PostMapping("/refresh")
+    @PostMapping("/api/refresh")
     @ApiOperation(value = "토큰 리프레시", notes = "리프레시 토큰을 보내주면 확인하고 엑세스토큰을 새로 발급")
     public ResponseDTO<?> validateRefreshToken(@RequestBody TokenDTO.RefreshTokenReqDTO refreshTokenReqDTO){
         return tokenService.validateRefreshToken(refreshTokenReqDTO.getRefreshToken());
