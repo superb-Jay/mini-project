@@ -1,6 +1,5 @@
 package com.fast.miniproject;
 
-import com.fast.miniproject.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

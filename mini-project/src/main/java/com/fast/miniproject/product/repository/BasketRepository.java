@@ -21,8 +21,8 @@ public interface BasketRepository extends JpaRepository<Basket, Long> {
     List<Basket> findAllByUser(User user);
 
     @Modifying
-    @Query(nativeQuery = true ,value = "DELETE FROM basket WHERE member =:member AND product IN (:id_list)")
-    void deleteByUserAndProductList(@Param("member") Long member,@Param("id_list") List<Integer> id_list);
+    @Query(nativeQuery = true, value = "DELETE FROM basket WHERE member =:member AND product IN (:id_list)")
+    void deleteByUserAndProductList(@Param("member") Long member, @Param("id_list") List<Integer> id_list);
 
 
 }

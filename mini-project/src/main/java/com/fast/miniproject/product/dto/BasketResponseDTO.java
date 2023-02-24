@@ -1,9 +1,8 @@
 package com.fast.miniproject.product.dto;
 
 
-import lombok.Getter;
-
 import com.fast.miniproject.product.entity.Basket;
+import lombok.Getter;
 
 @Getter
 public class BasketResponseDTO {

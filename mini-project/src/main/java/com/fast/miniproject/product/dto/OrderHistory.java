@@ -15,9 +15,10 @@ public class OrderHistory {
     private Long orderId;
     private LocalDateTime purchaseDate;
     ArrayList<PurchasedProductDto> purchasedProductList;
-    public OrderHistory(ArrayList<PurchasedProductDto> purchasedProducts,Orders orders){
+
+    public OrderHistory(ArrayList<PurchasedProductDto> purchasedProducts, Orders orders) {
         this.orderId = orders.getOrderId();
-        this.purchaseDate =orders.getPurchaseDate();
+        this.purchaseDate = orders.getPurchaseDate();
         this.purchasedProductList = purchasedProducts;
     }
 

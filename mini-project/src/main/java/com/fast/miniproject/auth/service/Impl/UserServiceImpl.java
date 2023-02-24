@@ -45,12 +45,12 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userRepository.findByEmail(loginReqDTO.getEmail())
                     .orElseThrow(IllegalArgumentException::new);
-            if(withDrawCheck(user)) {
+            if (withDrawCheck(user)) {
                 return new ErrorResponseDTO(500, "탈퇴한 회원입니다.").toResponse();
             }
             passwordMustBeSame(loginReqDTO.getPassword(), user.getPassword());
             TokenDTO tokenDTO = jwtProvider.makeJwtToken(user);
-            redisTemplateRepository.setDataExpire(tokenDTO.getRefreshToken(),user.getEmail(), jwtProvider.getExpiration(tokenDTO.getRefreshToken()));
+            redisTemplateRepository.setDataExpire(tokenDTO.getRefreshToken(), user.getEmail(), jwtProvider.getExpiration(tokenDTO.getRefreshToken()));
 
             return new ResponseDTO<>(tokenDTO);
 
@@ -59,18 +59,19 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
     @Override
     public ResponseDTO<?> editUser(UserDTO.LoginReqDTO loginReqDTO) {
         try {
-            if(loginReqDTO != null) {
+            if (loginReqDTO != null) {
                 User user = userRepository.findByEmail(loginReqDTO.getEmail())
                         .orElseThrow(IllegalArgumentException::new);
-                return new ResponseDTO<>(new UserDTO.PatchUserResDTO(user,productService.availableAmount(user)));
-            }else{
+                return new ResponseDTO<>(new UserDTO.PatchUserResDTO(user, productService.availableAmount(user)));
+            } else {
                 throw new IllegalArgumentException();
             }
 
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return new ErrorResponseDTO(500, "로그인 정보가 없습니다.").toResponse();
         }
     }
@@ -83,12 +84,12 @@ public class UserServiceImpl implements UserService {
                     .orElseThrow(IllegalArgumentException::new);
 
             passwordMustBeSame(patchUserReqDTO.getOldPassword(), user.getPassword());
-                   patchUserReqDTO.setNewPassword(encodingPassword(patchUserReqDTO.getNewPassword()));
+            patchUserReqDTO.setNewPassword(encodingPassword(patchUserReqDTO.getNewPassword()));
 
             user.update(patchUserReqDTO.getNewPassword(), patchUserReqDTO.getPhone(), patchUserReqDTO.getSalary(), patchUserReqDTO.getJob());
 
-            return new ResponseDTO<>(200,"회원정보 수정 성공하였습니다.", patchUserReqDTO);
-        }catch (IllegalArgumentException e) {
+            return new ResponseDTO<>(200, "회원정보 수정 성공하였습니다.", patchUserReqDTO);
+        } catch (IllegalArgumentException e) {
             return new ErrorResponseDTO(500, "기존 비밀번호가 일치하지 않습니다.").toResponse();
         }
     }
@@ -103,8 +104,8 @@ public class UserServiceImpl implements UserService {
             passwordMustBeSame(deleteUserReqDTO.getPassword(), user.getPassword());
             user.delete("withdraw");
 
-            return new ResponseDTO<>(200,"회원 탈퇴 성공.",user);
-        }catch (IllegalArgumentException e) {
+            return new ResponseDTO<>(200, "회원 탈퇴 성공.", user);
+        } catch (IllegalArgumentException e) {
             return new ErrorResponseDTO(500, "기존 비밀번호가 일치하지 않습니다.").toResponse();
         }
     }

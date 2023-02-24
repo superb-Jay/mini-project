@@ -25,12 +25,12 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     private final JwtProperties jwtProperties;
 
     @Builder
-    private JwtExceptionFilter(JwtProvider jwtProvider,JwtProperties jwtProperties) {
+    private JwtExceptionFilter(JwtProvider jwtProvider, JwtProperties jwtProperties) {
         this.jwtProvider = jwtProvider;
         this.jwtProperties = jwtProperties;
     }
 
-    public static JwtExceptionFilter of(JwtProvider jwtProvider,JwtProperties jwtProperties) {
+    public static JwtExceptionFilter of(JwtProvider jwtProvider, JwtProperties jwtProperties) {
         return JwtExceptionFilter.builder()
                 .jwtProvider(jwtProvider)
                 .jwtProperties(jwtProperties)
@@ -73,7 +73,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         JSONObject responseJson = new JSONObject();
-        responseJson.put("code",errorCode.getCode());
+        responseJson.put("code", errorCode.getCode());
         responseJson.put("message", errorCode.getMessage());
         response.getWriter().print(responseJson);
     }

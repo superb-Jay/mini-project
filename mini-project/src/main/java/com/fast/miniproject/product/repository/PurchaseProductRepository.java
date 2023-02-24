@@ -9,11 +9,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface PurchaseProductRepository extends JpaRepository<PurchasedProduct,Long> {
+public interface PurchaseProductRepository extends JpaRepository<PurchasedProduct, Long> {
 
-    @Query(nativeQuery = true,value = "SELECT * FROM purchased_product as p WHERE p.orders IN (:id_list)")
+    @Query(nativeQuery = true, value = "SELECT * FROM purchased_product as p WHERE p.orders IN (:id_list)")
     ArrayList<PurchasedProduct> findAllByOrdersList(@Param("id_list") List<Orders> id_list);
 
-    @Query(nativeQuery = true,value = "SELECT sum(p.purchased_product_price) FROM purchased_product as p WHERE p.orders IN (:id_list)")
+    @Query(nativeQuery = true, value = "SELECT sum(p.purchased_product_price) FROM purchased_product as p WHERE p.orders IN (:id_list)")
     Integer searchSumByOrdersList(@Param("id_list") List<Orders> id_list);
 }

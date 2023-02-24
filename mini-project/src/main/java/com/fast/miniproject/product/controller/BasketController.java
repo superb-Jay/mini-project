@@ -36,6 +36,6 @@ public class BasketController {
     @ApiOperation(value = "장바구니에 상품 추가 (토큰 0)", notes = "productId를 통한 상품 추가")
 
     public ResponseDTO<?> addBasket(@AuthenticationPrincipal UserDTO.LoginReqDTO loginReqDTO, @RequestBody BasketAddRequestDTO requestDTO) {
-        return basketService.addBasket(loginReqDTO ,requestDTO);
+        return basketService.addBasket(loginReqDTO, requestDTO);
     }
 }
