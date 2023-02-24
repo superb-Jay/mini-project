@@ -132,7 +132,6 @@ public class ProductServiceImpl implements ProductService {
         Integer sum = purchaseProductRepository.searchSumByOrdersList(ordersList);
         int max = (int) (user.getSalary() * 2);
         if (sum != null) {
-            System.out.println(sum);
             max -= sum;
         }
         for (Product product : productList) {
