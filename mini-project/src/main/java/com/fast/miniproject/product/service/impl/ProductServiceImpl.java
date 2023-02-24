@@ -138,7 +138,7 @@ public class ProductServiceImpl implements ProductService {
         for (Product product : productList) {
             max -= product.getPrice();
         }
-        if (max > 0) {
+        if (max >= 0) {
             return true;
         } else {
             return false;
