@@ -129,8 +129,8 @@ public class ProductServiceImpl implements ProductService {
 
     private boolean isAvailableToPurchase(User user, List<Product> productList) {
         List<Orders> ordersList = orderRepository.findAllByUserOrderByPurchaseDate(user);
-        Integer sum = purchaseProductRepository.searchSumByOrdersList(ordersList);
-        int max = (int) (user.getSalary() * 2);
+        Long sum = purchaseProductRepository.searchSumByOrdersList(ordersList);
+        long max = user.getSalary() * 2;
         if (sum != null) {
             max -= sum;
         }

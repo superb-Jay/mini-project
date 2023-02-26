@@ -15,5 +15,5 @@ public interface PurchaseProductRepository extends JpaRepository<PurchasedProduc
     ArrayList<PurchasedProduct> findAllByOrdersList(@Param("id_list") List<Orders> id_list);
 
     @Query(nativeQuery = true, value = "SELECT sum(p.purchased_product_price) FROM purchased_product as p WHERE p.orders IN (:id_list)")
-    Integer searchSumByOrdersList(@Param("id_list") List<Orders> id_list);
+    Long searchSumByOrdersList(@Param("id_list") List<Orders> id_list);
 }
